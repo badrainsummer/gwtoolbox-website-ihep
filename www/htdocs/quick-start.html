@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<!--
+  Phantom by HTML5 UP
+  html5up.net | @ajlkn
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <head>
+    <title>GW Toolbox</title>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="/assets/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <link href="assets/css/all.css" rel="stylesheet">
+  </head>
+  <body class="is-preload">
+    <!-- Wrapper -->
+      <div id="wrapper">
+
+        <!-- Header -->
+          <header id="header">
+            <div class="inner">
+
+              <!-- Logo -->
+                <span class="icon2 stylelogo fas fa-tools"></span>
+                <a href="index.html" class="logo"> 
+                  <span class="title">GW Toolbox</span>
+                </a>
+
+              <!-- Nav -->
+                <nav>
+                  <ul>
+                    <li><a href="#menu">Menu</a></li>
+                  </ul>
+                </nav>
+
+            </div>
+          </header>
+
+        <!-- Menu -->
+          <nav id="menu">
+            <h2>Menu</h2>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="quick-start.html">Quick start</a></li>
+              <li><a href="obs-earth.html">Earth</a></li>
+              <li><a href="obs-space.html">Space</a></li>
+              <li><a href="obs-pta.html">PTA</a></li>
+              <li><a href="documentation.html">Documentation</a></li>
+              <li><a href="about.html">About</a></li>
+            </ul>
+          </nav>
+
+        <!-- Main -->
+          <div id="main">
+            <div class="inner">
+              <h1>Quick start</h1>
+              <p>GW toolbox allows to simulate gravitatational wave detections with various detectors. </p>
+              <hr />
+              <h2>Initial setup</h2>
+              <p>Choose a duration time of observations and signal to noise ratio. Default values for these parameters are 10000 seconds and 8, respectively.
+                 You can also decide which cosmological model you want to use. By default the simulator will use the flat &Lambda;CDM model with h=0.7 and &Omega;<sub>M</sub>=0.3.</p>
+              <hr />
+              <h2> Earth </h2>
+                <h3> Detectors </h3>
+                <p> You can choose various detectors: advance Virgo, ad LIGO, ET. You can also change parameters (arm size and laser power) and build your own detector (LIGO-like or ET-like). Then a smart thing to do is first to plot the new sensitivity function.</p>
+                <h3> Sources </h3>
+                <p> For observations from Earth you can detect binary stellar black hole mergers, double neutron star mergers, and stellar black hole-neutron star mergers. For the cosmic merger rates we used results for fiducial models in Mapelli et al 2017, 2018. However, we will also allow the user to change parameters within these models.</p>
+              <hr />
+              <h2> Space - soon available </h2>
+                <h3> Detectors </h3>
+                <p> Simulate LISA detection.</p>
+                <h3> Sources </h3>
+                <p> For example: super massive black hole mergers, inspirals of binary stellar black hole mergers, inspirals of double neutron star mergers, inspirals of stellar black hole-neutron star mergers, and extreme mass ratio inspirals.</p>
+              <hr />
+              <h2> Output </h2>
+                <ul>
+                  <li>Sensitivity function</li>
+                  <li>Total number of detected systems</li>
+                  <li>Table with parameters of detected systems (choose sample size)</li>
+                  <li>Histogram of a chosen parameter</li>
+                  <li>Plot of two chosen parameters</li>
+                </ul>
+              <hr />
+              <h2> PTA - under construction </h2>
+              <p></p>
+            </div>
+          </div>
+
+        <!-- Footer -->
+          <footer id="footer">
+            <div class="inner">
+              
+              
+              <ul class="copyright">
+                <li>&copy; Radboud University. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+              </ul>
+            </div>
+          </footer>
+
+      </div>
+
+    <!-- Scripts -->
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/browser.min.js"></script>
+      <script src="assets/js/breakpoints.min.js"></script>
+      <script src="assets/js/util.js"></script>
+      <script src="assets/js/main.js"></script>
+
+  </body>
+</html>

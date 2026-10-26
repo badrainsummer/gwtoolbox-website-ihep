@@ -1,0 +1,705 @@
+<!DOCTYPE HTML>
+<!--
+     Phantom by HTML5 UP
+     html5up.net | @ajlkn
+     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>GW Toolbox</title>
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" href="/assets/favicon.png"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/plot.css" />
+		<link rel="stylesheet" href="assets/css/patches.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		<!-- <script src="https://www.google.com/recaptcha/api.js?render=6LchHMIUAAAAAGzHYwFRL6lW-9qqoMpiLMt52rz2"></script> -->
+		
+	</head>
+	
+
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+			
+			<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					
+					<!-- Logo -->
+                                        <a href="index.html" class="logo">
+                                         <div class="col-4"><img src="images/logogwtoolbox.jpg"  width="300"/></span></div>
+          <!--<span class="icon2 stylelogo fas fa-tools"></span>-->
+            <!--<span class="title">GW-Universe Toolbox</span>-->
+                                        </a>
+					<!--
+					<span class="icon2 stylelogo fas fa-tools"></span>
+					<a href="index.html" class="logo">
+						<span class="title">GW Toolbox</span>
+					</a>
+					-->
+					<!-- Nav -->
+					<nav>
+						<ul>
+							<li><a href="#menu">Menu</a></li>
+						</ul>
+					</nav>
+					
+				</div>
+			</header>
+			
+			<!-- Menu -->
+			<nav id="menu">
+				<h2>Menu</h2>
+				<ul>
+					<li><a href="index.html">Home</a></li>
+                    <!--
+					<li><a href="quick-start.html">Quick start</a></li>
+                    -->
+                    <li><a href="GWtoolbox.html">GWtoolbox</a></li>
+					<li><a href="obs-earth.html">Earth</a></li>
+					<li><a href="obs-multimessenger.html">GW/GRB joint detection</a></li>
+                    <li><a href="obs-space.html">Space</a></li>
+					<li><a href="obs-pta.html">PTA</a></li>
+                    <li><a href="population_model.html">Population Models</a></li>
+                    <li><a href="/gradio/">AI Assistant</a></li>
+                    <li><a href="https://code.ihep.ac.cn/caoty/gwtoolbox.git">Python Package</a></li>
+                    <li><a href="documents.html">Documents</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="https://youtu.be/mdGZfIUXP_A">Demo on YouTube</a></li>
+                    <li><a href="https://www.bilibili.com/video/BV14Q4y197H7?share_source=copy_web">Demo on bilibili</a></li>
+				</ul>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<div class="inner">
+					<h1>Ground-based observatories</h1>
+					<div class="row">
+						<div class="col-6 col-12-small">
+							<form action="cgi-bin/form-earth.py" method="post" onchange="updateform()" onsubmit="return submitform()" id="setup" >
+								<h3>Input:</h3>
+								<!-- <th>Setup:</th><th>Detector:</th><th>Populations:</th>-->
+                                <style>
+                                    .detector-group {
+                                        display: grid;
+                                        grid-template-columns: repeat(3, 1fr);
+                                        gap: 10px 0px;
+                                        margin-top: 5px;
+                                        margin-left: 0;
+                                    }
+                                    .detector-item {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 5px;
+                                    }
+                                    .detector-group .detector-item.ligo-et-like {
+                                        grid-column: span 3;
+                                        display: grid;
+                                        grid-template-columns: repeat(2, 1fr);
+                                        gap: 10px 20px;
+                                    }
+                                    .detector-group .detector-item.ligo-et-like > div {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 5px;
+                                    }
+                                    .small-btn {
+                                        font-size: 12px;
+                                        padding: 2px 6px;
+                                        border: 1px solid #999;
+                                        border-radius: 4px;
+                                        background-color: #f3f3f3;
+                                        cursor: pointer;
+                                        line-height: 1;
+                                        height: 26px;
+                                        display: inline-flex;
+                                        align-items: center;
+                                        vertical-align: middle;
+                                        position: relative;
+                                        top: 16px;
+                                    }
+                                    .small-btn:hover {
+                                        background-color: #e6e6e6;
+                                    }
+                                    .config-panel {
+                                        margin-left: 20px;
+                                        margin-top: 20px;
+                                        border: 1px solid #ccc;
+                                        border-radius: 8px;
+                                        padding: 10px 15px;
+                                        background-color: #fafafa;
+                                    }
+                                    .config-panel h4 {
+                                        margin-top: 0;
+                                        margin-top: 0;
+                                        color: #333;
+                                        font-size: 14px;
+                                    }
+                                    .config-panel label {
+                                        display: inline-block;
+                                        width: 230px;
+                                        margin-top: 5px;
+                                    }
+                                    .config-panel input {
+                                        margin-top: 5px;
+                                    }
+                                </style>
+								<label for="detector_type">Detector:</label>
+                                    <div id="detector_type" class="detector-group">
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="ligo" id="ligo" checked>
+                                        <label for="ligo">LIGO</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="hanford" id="hanford">
+                                        <label for="hanford">Hanford</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="livingston" id="livingston">
+                                        <label for="livingston">Livingston</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="ligo-o3" id="ligo-o3">
+                                        <label for="ligo-o3">LIGO-o3</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="hanford-o3" id="hanford-o3">
+                                        <label for="hanford-o3">Hanford-o3</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="livingston-o3" id="livingston-o3">
+                                        <label for="livingston-o3">Livingston-o3</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="ligo-o4" id="ligo-o4">
+                                        <label for="ligo-o4">LIGO-o4</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="hanford-o4" id="hanford-o4">
+                                        <label for="hanford-o4">Hanford-o4</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="livingston-o4" id="livingston-o4">
+                                        <label for="livingston-o4">Livingston-o4</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="virgo" id="virgo" checked>
+                                        <label for="virgo">Virgo</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="kagra" id="kagra">
+                                        <label for="kagra">KAGRA</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="et" id="et">
+                                        <label for="et">ET</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="ce1" id="ce1">
+                                        <label for="ce1">CE-1</label>
+                                    </div>
+                                    <div class="detector-item">
+                                        <input type="checkbox" name="detector_type" value="ce2" id="ce2">
+                                        <label for="ce2">CE-1</label>
+                                    </div>
+                                    <div class="detector-item ligo-et-like">
+                                        <div>
+                                            <input type="checkbox" id="ligoLike" name="detector_type" value="ligo-like">
+                                            <label for="ligoLike">LIGO-like</label>
+                                            <button type="button" class="small-btn" onclick="togglePanel('ligo')">check</button>
+                                        </div>
+                                        <div>
+                                            <input type="checkbox" id="etLike" name="detector_type" value="et-like">
+                                            <label for="etLike">ET-like</label>
+                                            <button type="button" class="small-btn" onclick="togglePanel('et')">check</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- LIGO-like 参数面板 -->
+                                <div id="panel_ligo" class="config-panel" style="display: none;">
+                                <h4>LIGO-like Configuration</h4>
+                                <label>Arm length [m]:</label><input type="text" name="arm_length_ligo" id="arm_length_ligo" value="3995">
+                                <label>Laser power [W]:</label><input type="text" name="laser_power_ligo" id="laser_power_ligo" value="125">
+                                <label>Cavity mirror transmission (-):</label><input type="text" name="cavity_mirror_transmission_ligo" id="cavity_mirror_transmission_ligo" value="0.014">
+                                <label>Signal recycling transmission (-):</label><input type="text" name="signal_recycling_transmission_ligo" id="signal_recycling_transmission_ligo" value="0.2">
+                                <label>Power recycling transmission (-):</label><input type="text" name="power_recycling_transmission_ligo" id="power_recycling_transmission_ligo" value="0.03">
+                                <label>Mirror mass (kg):</label><input type="text" name="mirror_mass_ligo" id="mirror_mass_ligo" value="40">
+                                <label>Signal recycling phase (deg):</label><input type="text" name="signal_recycling_phase_ligo" id="signal_recycling_phase_ligo" value="-90">
+                                <label>Power recycling cavity length (m):</label><input type="text" name="power_recycling_length_ligo" id="power_recycling_length_ligo" value="53">
+                                <label>Signal recycling cavity length (m):</label><input type="text" name="signal_recycling_length_ligo" id="signal_recycling_length_ligo" value="50.525">
+                                <button type="button" class="save-btn" onclick="savePanel('ligo')">save</button>
+                                </div>
+                                <!-- ET-like 参数面板 -->
+                                <div id="panel_et" class="config-panel" style="display: none;">
+                                <h4>ET-like Configuration</h4>
+                                <label>Arm length [m]:</label><input type="text" name="arm_length_et" id="arm_length_et" value="10000">
+                                <label>Laser power [W]:</label><input type="text" name="laser_power_et" id="laser_power_et" value="500">
+                                <label>Cavity mirror transmission (-):</label><input type="text" name="cavity_mirror_transmission_et" id="cavity_mirror_transmission_et" value="0.014">
+                                <label>Signal recycling transmission (-):</label><input type="text" name="signal_recycling_transmission_et" id="signal_recycling_transmission_et" value="0.2">
+                                <label>Power recycling transmission (-):</label><input type="text" name="power_recycling_transmission_et" id="power_recycling_transmission_et" value="0.03">
+                                <label>Mirror mass (kg):</label><input type="text" name="mirror_mass_et" id="mirror_mass_et" value="200">
+                                <label>Signal recycling phase (deg):</label><input type="text" name="signal_recycling_phase_et" id="signal_recycling_phase_et" value="-90">
+                                <label>Power recycling cavity length (m):</label><input type="text" name="power_recycling_length_et" id="power_recycling_length_et" value="53">
+                                <label>Signal recycling cavity length (m):</label><input type="text" name="signal_recycling_length_et" id="signal_recycling_length_et" value="50.525">
+                                <button type="button" class="save-btn" onclick="savePanel('et')">save</button>
+                                </div>
+                                <script>
+                                    const ligo = document.getElementById('ligo');
+                                    const hanford = document.getElementById('hanford');
+                                    const livingston = document.getElementById('livingston');
+                                    const ligo_o3 = document.getElementById('ligo-o3');
+                                    const hanford_o3 = document.getElementById('hanford-o3');
+                                    const livingston_o3 = document.getElementById('livingston-o3');
+                                    const ligo_o4 = document.getElementById('ligo-o4');
+                                    const hanford_o4 = document.getElementById('hanford-o4');
+                                    const livingston_o4 = document.getElementById('livingston-o4');
+
+                                    ligo.addEventListener('change', () => {
+                                        if (ligo.checked) {
+                                        hanford.checked = false;
+                                        livingston.checked = false;
+                                        }
+                                    });
+                                    [hanford, livingston].forEach(det => {
+                                        det.addEventListener('change', () => {
+                                        if (det.checked) {
+                                            ligo.checked = false;
+                                        }
+                                        });
+                                    });
+                                    ligo_o3.addEventListener('change', () => {
+                                        if (ligo_o3.checked) {
+                                        hanford_o3.checked = false;
+                                        livingston_o3.checked = false;
+                                        }
+                                    });
+                                    [hanford_o3, livingston_o3].forEach(det => {
+                                        det.addEventListener('change', () => {
+                                        if (det.checked) {
+                                            ligo_o3.checked = false;
+                                        }
+                                        });
+                                    });
+                                    ligo_o4.addEventListener('change', () => {
+                                        if (ligo_o4.checked) {
+                                        hanford_o4.checked = false;
+                                        livingston_o4.checked = false;
+                                        }
+                                    });
+                                    [hanford_o4, livingston_o4].forEach(det => {
+                                        det.addEventListener('change', () => {
+                                        if (det.checked) {
+                                            ligo_o4.checked = false;
+                                        }
+                                        });
+                                    });
+                                </script>
+
+                                <script>
+                                function togglePanel(detector) {
+                                    const panel = document.getElementById(`panel_${detector}`);
+                                    const otherPanels = document.querySelectorAll('.config-panel');
+                                    otherPanels.forEach(p => { if (p !== panel) p.style.display = 'none'; });
+                                    panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+                                }
+                                function savePanel(detector) {
+                                    const panel = document.getElementById(`panel_${detector}`);
+                                    panel.style.display = 'none';
+                                }
+                                </script>
+								
+								<label for="event_type">Event types:</label>
+								<select name="event_type" id="event_type">
+									<option value='bhbh' >Black Hole Binary Mergers</option>
+									<option value='nsns' >Double Neutron Star Mergers</option>
+									<option value='bhns' >NS-BH mergers</option>
+                                    <option value='inds' >individual source</option>
+								</select>  
+                                <div id="BBHmodel" style="display: none;">
+                                    <div class="indent">
+                                        <label for="bhbh_population">Population model for BHBH</label>
+                                        <select name="bhbh_population" id="bhbh_population">
+                                            <option value='I' selected>Parameterization I (default param.)</option>
+                                            <option value='IS'>Parameterization I (customised param.)</option>
+                                            <option value='II'>Parameterization II (default param.)</option>
+                                            <option value='IIS'>Parameterization II (customised param.)</option>                                  
+                                        </select>
+                                    </div>
+                                    <div id="BBH_IS" style="display: none;">
+                                        <div class="indent">
+                                            <a href="population_model.html">[Introduction to models]</a>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">Rn (/yr/Gpc3):</label><input type="text" name="Rn_BBH_IS" id="Rn_BBH_IS" value="13" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Norm. factor of the merger rate density)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">&tau; (Gyr):</label><input type="text" name="tau_BBH_IS" id="tau_BBH_IS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Delay time from formation to merger)</label>
+                                            <br>
+                                            
+                                            <label style="display: inline; width: 20%;">µ(M☉):</label><input type="text" name="mu_BBH_IS" id="mu_BBH_IS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower limit of mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">c:</label><input type="text" name="c_BBH_IS" id="c_BBH_IS" value="6" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(related with mass peak)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">γ:</label><input type="text" name="gamma_BBH_IS" id="gamma_BBH_IS" value="2.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(index of mass functoin tail)</label>
+                                    
+                                            <br>
+                                            <label style="display: inline; width: 20%;">mcut(M☉):</label><input type="text" name="mcut_BBH_IS" id="mcut_BBH_IS" value="95" style="display: inline; width: 20%;"/>  <label style="display: inline; width: 20%;">(high mass cut)</label> 
+                                            <br> 
+                                            <label style="display: inline; width: 20%;">ql:</label><input type="text" name="ql_BBH_IS" id="ql_BBH_IS" value="0.4" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower cut of mass ratio)</label>          
+                                            <br>                                                    
+                                            <label style="display: inline; width: 20%;">σχ:</label><input type="text" name="sigx_BBH_IS" id="sigx_BBH_IS" value="0.1" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(dispersion of effective spin)</label>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div id="BBH_IIS" style="display: none;">
+                                        <div class="indent">
+                                            <a href="population_model.html">[Introduction to models]</a>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">Rn (/yr/Gpc3):</label><input type="text" name="Rn_BBH_IIS" id="Rn_BBH_IIS" value="13" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Norm. factor of the merger rate density)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">&tau; (Gyr):</label><input type="text" name="tau_BBH_IIS" id="tau_BBH_IIS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Delay time from formation to merger)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">µ(M☉):</label><input type="text" name="mu_BBH_IIS" id="mu_BBH_IIS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower limit of mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">c:</label><input type="text" name="c_BBH_IIS" id="c_BBH_IIS" value="6" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(related with mass peak)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">γ:</label><input type="text" name="gamma_BBH_IIS" id="gamma_BBH_IIS" value="2.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(index of mass functoin tail)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">mcut(M☉):</label><input type="text" name="mcut_BBH_IIS" id="mcut_BBH_IIS" value="95" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(high mass cut)</label> 
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_peak(M☉):</label><input type="text" name="mpeak_BBH_IIS" id="mpeak_BBH_IIS" value="40" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(location of Gaussian mass peak)</label>
+                                            <br>      
+                                            <label style="display: inline; width: 20%;">m_peak_scale:</label><input type="text" name="mpeakscale_BBH_IIS" id="mpeakscale_BBH_IIS" value="0.002" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(relative height of Gaussian mass peak)</label>  
+                                            <br>    
+                                            <label style="display: inline; width: 20%;">m_peak_sig(M☉):</label><input type="text" name="mpeaksig_BBH_IIS" id="mpeaksig_BBH_IIS" value="1" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(width of Gaussian mass peak)</label> 
+                                            <br>                                                                                                         
+                                            <label style="display: inline; width: 20%;">ql:</label><input type="text" name="ql_BBH_IIS" id="ql_BBH_IIS" value="0.4" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower cut of mass ratio)</label>          
+                                            <br>                            
+                                            <label style="display: inline; width: 20%;">σχ:</label><input type="text" name="sigx_BBH_IIS" id="sigx_BBH_IIS" value="0.1" style="display: inline; width: 20%;"/> <label style="display: inline; width: 20%;">(dispersion of effective spin)</label>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>    
+                                </div>
+                            
+                                <div id="DNSmodel" style="display: none;">
+                                    <div class="indent">
+                                        <label for="nsns_population">Population model for NSNS</label>
+                                        <select name="nsns_population" id="nsns_population" >
+                                            <option value='I' selected>Parameterization I (default param.)</option>
+                                            <option value='IS'>Parameterization I (customised param.)</option>
+                                        </select>
+                                    </div>
+                                    <div id="DNS_IS" style="display: none;">
+                                        <div class="indent">
+                                            <a href="population_model.html">[Introduction to models]</a>
+                                            <br>                                        
+                                            <label style="display: inline; width: 20%;">Rn (/yr/Gpc3):</label><input type="text" name="Rn_DNS_IS" id="Rn_DNS_IS" value="300" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Norm. factor of the merger rate density)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">tau (Gyr):</label><input type="text" name="tau_DNS_IS" id="tau_DNS_IS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Delay time from formation to merger)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_peak(M☉):</label><input type="text" name="mmean_DNS_IS" id="mmean_DNS_IS" value="1.4" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Peak of Gaussian mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_scale(M☉):</label><input type="text" name="mscale_DNS_IS" id="mscale_DNS_IS" value="0.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Width of Gaussian mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_low(M☉):</label><input type="text" name="mlow_DNS_IS" id="mlow_DNS_IS" value="1.1" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower limit of mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_high(M☉):</label><input type="text" name="mhigh_DNS_IS" id="mhigh_DNS_IS" value="2.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Upper limit of mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">σχ:</label><input type="text" name="sigx_DNS_IS" id="sigx_DNS_IS" value="0.05" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(dispersion of effective spin)</label>
+                                            <br> 
+                                            <br> 
+                                        </div>
+                                    </div>                                       
+								</div>
+          
+								<div id="BHNSmodel" style="display: none;">
+                                    <div class="indent">
+                                        <label for="bhns_population">Population model for BHNS</label>
+                                        <select name="bhns_population" id="bhns_population" >
+                                            <option value='I' selected>Parameterization I (default param.)</option>
+                                            <option value='IS'>Parameterization I (customised param.)</option>
+                                            <option value='II'>Parameterization II (default param.)</option>
+                                            <option value='IIS'>Parameterization II (customised param.)</option>      
+                                        </select>
+                                    </div>
+                                    <div id="BHNS_IS" style="display: none;">
+                                        <div class="indent">
+                                            <a href="population_model.html">[Introduction to models]</a>
+                                            <br> 
+                                            <label style="display: inline; width: 20%;">Rn (/yr/Gpc3):</label><input type="text" name="Rn_BHNS_IS" id="Rn_BHNS_IS" value="5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Norm. factor of the merger rate density)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">tau (Gyr):</label><input type="text" name="tau_BHNS_IS" id="tau_BHNS_IS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Delay time from formation to merger)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_peak(M☉):</label><input type="text" name="mmean_BHNS_IS" id="mmean_BHNS_IS" value="1.4" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Peak of neutron star mass distr.)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_scale(M☉):</label><input type="text" name="mscale_BHNS_IS" id="mscale_BHNS_IS" value="0.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Width of NS mass distr.)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_low(M☉):</label><input type="text" name="mlow_BHNS_IS" id="mlow_BHNS_IS" value="1.1" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower limit of NS mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_high(M☉):</label><input type="text" name="mhigh_BHNS_IS" id="mhigh_BHNS_IS" value="2.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Upper limit of mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">µ(M☉):</label><input type="text" name="mu_BHNS_IS" id="mu_BHNS_IS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower limit of mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">c:</label><input type="text" name="c_BHNS_IS" id="c_BHNS_IS" value="15" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(related with mass peak)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">γ:</label><input type="text" name="gamma_BHNS_IS" id="gamma_BHNS_IS" value="2.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(index of mass functoin tail)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">mcut(M☉):</label><input type="text" name="mcut_BHNS_IS" id="mcut_BHNS_IS" value="95" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(high mass cut)</label> 
+                                            <br>                                          
+                                            <label style="display: inline; width: 20%;">σχ:</label><input type="text" name="sigx_BHNS_IS" id="sigx_BHNS_IS" value="0.1" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(dispersion of effective spin)</label>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>  
+                                    <div id="BHNS_IIS" style="display: none;">
+                                        <div class="indent">
+                                            <a href="population_model.html">[Introduction to models]</a>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">Rn (/yr/Gpc3):</label><input type="text" name="Rn_BHNS_IIS" id="Rn_BHNS_IIS" value="5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Norm. factor of the merger rate density)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">tau (Gyr):</label><input type="text" name="tau_BHNS_IIS" id="tau_BHNS_IIS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Delay time from formation to merger)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_peak(M☉):</label><input type="text" name="mmean_BHNS_IIS" id="mmean_BHNS_IIS" value="1.4" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Peak of neutron star mass distr.)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_scale(M☉):</label><input type="text" name="mscale_BHNS_IIS" id="mscale_BHNS_IIS" value="0.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Width of NS mass distr.)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_low(M☉):</label><input type="text" name="mlow_BHNS_IIS" id="mlow_BHNS_IIS" value="1.1" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower limit of NS mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">m_high(M☉):</label><input type="text" name="mhigh_BHNS_IIS" id="mhigh_BHNS_IIS" value="2.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(Upper limit of mass)</label>
+                                            <br> 
+                                            <label style="display: inline; width: 20%;">µ(M☉):</label><input type="text" name="mu_BHNS_IIS" id="mu_BHNS_IIS" value="3" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(lower limit of mass)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">c:</label><input type="text" name="c_BHNS_IIS" id="c_BHNS_IIS" value="15" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(related with mass peak)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">γ:</label><input type="text" name="gamma_BHNS_IIS" id="gamma_BHNS_IIS" value="2.5" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(index of mass functoin tail)</label>
+                                            <br>
+                                            <label style="display: inline; width: 20%;">mcut(M☉):</label><input type="text" name="mcut_BHNS_IIS" id="mcut_BHNS_IIS" value="95" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(high mass cut)</label> 
+                                            <br>                                     
+                                            <label style="display: inline; width: 20%;">m_peak(M☉):</label><input type="text" name="mpeak_BHNS_IIS" id="mpeak_BHNS_IIS" value="40" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(location of BH Gaussian mass peak)</label>
+                                            <br>           
+                                            <label style="display: inline; width: 20%;">m_peak_scale(M☉):</label><input type="text" name="mpeakscale_BHNS_IIS" id="mpeakscale_BHNS_IIS" value="0.002" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(relative height of BH Gaussian mass peak)</label>
+                                            <br>                 
+                                            <label style="display: inline; width: 20%;">m_peak_sig(M☉):</label><input type="text" name="mpeaksig_BHNS_IIS" id="mpeaksig_BHNS_IIS" value="0.4" style="display: inline; width: 20%;"/> <label style="display: inline; width: 20%;">(width of BH Gaussian mass peak)</label>
+                                            <br>                                                                                                                     
+                                            <label style="display: inline; width: 20%;">σχ:</label><input type="text" name="sigx_BHNS_IIS" id="sigx_BHNS_IIS" value="0.1" style="display: inline; width: 20%;"/><label style="display: inline; width: 20%;">(dispersion of effective spin)</label>
+                                            <br>
+                                            <br>
+                                        </div>
+                                    </div>                                   
+								</div>
+
+                                <div id="individual_model" style="display:none;">
+                                    <div class="indent">
+                                        <label style="display: inline; width: 20%;">z:</label>
+                                        <input type="text" name="z_individual" id="z_individual" style="display: inline; width: 25%;" />
+                                        <label style="display: inline; width: 20%;">(cosmological redshift, valid only if D is not provided)</label>
+                                        <br>
+                                        <label style="display: inline; width: 20%;">D:</label>
+                                        <input type="text" name="D_individual" id="D_individual" value="100" style="display: inline; width: 25%;" />
+                                        <label style="display: inline; width: 20%;">(luminosity distance in Mpc)</label>
+                                        <br>
+                                        <label style="display: inline; width: 20%;">m₁:</label>
+                                        <input type="text" name="m1_individual" id="m1_individual" value="30" style="display: inline; width: 25%;" />
+                                        <label style="display: inline; width: 20%;">(mass of the primary star, in unit of solar masses)</label>
+                                        <br>
+                                        <label style="display: inline; width: 20%;">m₂:</label>
+                                        <input type="text" name="m2_individual" id="m2_individual" value="20" style="display: inline; width: 25%;" />
+                                        <label style="display: inline; width: 20%;">(mass of the secondary star, in unit of solar masse)</label>
+                                        <br>
+                                        <label style="display: inline; width: 20%;">χ:</label>
+                                        <input type="text" name="chi_individual" id="chi_individual" value="0.9" style="display: inline; width: 25%;" />
+                                        <label style="display: inline; width: 20%;">(effective spin)</label>
+                                    </div>
+                                </div>
+                                
+								<label for="time" style="display: inline; width: 20%;">Time [days]:</label>
+								<input type="text" name="time" id="time" value = "3650" style="display: inline; width: 20%;"/>
+								<label for="snr" style="display: inline; width: 20%;">SNR-threshold:</label>
+								<input type="text" name = "snr" id="snr" value = "8" style="display: inline; width: 20%;" />
+								<label for="cosmology">Cosmology:</label>
+								<select name="cosmology" id="cosmology">
+									<option value = "WMAP5" > Flat &Lambda;CDM - WMAP5  </option>
+									<option value = "WMAP7" > Flat &Lambda;CDM - WMAP7  </option>
+									<option value = "WMAP9" > Flat &Lambda;CDM - WMAP9  </option>
+									<option value = "Planck13" > Flat &Lambda;CDM - Planck13  </option>
+									<option value = "Planck15"> Flat &Lambda;CDM - Planck15  </option>
+								    <option value = "Planck18" selected> Flat &Lambda;CDM - Planck18  </option>
+                                    <option value = "FlatLambdaCDM"> customised Flat &Lambda;CDM </option>
+								</select>
+                                <div id = "selfCosmos" style="display: none;">
+                                    <label for="H0" style="display: inline; width: 20%;"> H0(km/s/Mpc): </label><input type="text" name="H0" id="H0" value="70" style="display: inline; width: 15%;"/>
+                                    <label for="omega" style="display: inline; width: 20%;"> &Omega;0: </label><input type="text" name="omega" id="omega" value="0.3" style="display: inline; width: 15%;"/>
+                                    <label for="Tcmb" style="display: inline; width: 20%;"> Tcmb (K): </label><input type="text" name="Tcmb" id="Tcmb" value="2.725" style="display: inline; width: 15%;"/>
+                                </div>
+
+                                <div id = "desired_outputs"display: block;">
+                                    <label>Desired outputs:</label>
+                                    <div>
+                                        <input type = "checkbox" name="count" id="count" checked disabled />
+                                        <label for="count">Number of Detection</label>
+                                    </div>
+                                    <div>
+                                        <input type = "checkbox" name="sensitivity" id="sensitivity" checked disabled />
+                                        <label for="sensitivity">Sensitivity Curve</label>
+                                    </div>
+                                    <div>
+                                        <input type = "checkbox" name="with_events" id="with_events" />
+                                        <label for="with_events"> Catalogue </label>
+                                        <div id="if_with_events" style="display:none;">
+                                        <div class="indent">
+                                            <div>
+                                                <label for="max_events">Maximum number of events to generate:</label>
+                                                <input type="text" id="max_events"  name="max_events" value="100" />
+                                            </div>
+                                            <div style="display: flex; gap: 20px; align-items: center;">
+                                                <div>
+                                                    <input type="checkbox" id="with_errors" name="with_errors" />
+                                                    <label for="with_errors">Simulate uncertainties</label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" id="with_dtp" name="with_dtp" />
+                                                    <label for="with_dtp">list detectabilites</label>
+                                                </div>
+                                            </div>
+                                            <div style="margin-top: 5px;">
+                                                <input type="checkbox" id="with_angles" name="with_angles" />
+                                                <label for="with_angles">list angles and location (if network)</label>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+								<div>
+									<input name="recaptcha" id="recaptcha" type="hidden" >
+									<input type = "submit" id="submit" value = "Observe" >
+								</div>
+									<label class='slimtext'>Takes a few minutes. Heavy task may cause timeout error. In this case, we recommend to run the python package locally.</label>
+							</form>
+                            <div id="explain_columns" style="display:none;" >
+                            <h5> Meaning of catalogue columns </h5>
+                            <ul>
+                                <li>m1: mass of the primary star, in unit of solar masses;
+                                <li>m2: mass of the secondary star, in unit of solar masses;
+                                <li>z: cosmological redshift;
+                                <li>D: luminosity distance in Mpc;
+                                <li>&chi;: effective spin;
+                                <li>d...: uncertainties of corresponding parameters.
+                            </ul>
+                            </div>
+						</div>
+						<div class="col-6 col-12-small">
+							<h3>Result:</h3>
+                            <div id="status">Waiting for your input ...</div>
+							<!-- <label id="resultstatus">Status: waiting for input</label>-->
+							<h5>Sensitivity curve:</h5>
+							<div id="sensitivity" class="plot"></div>
+							<div id="downloadsenscurve" style="display:none;">
+                                <!--
+                                <form method="post" action="" onsubmit="savetable()" id="savetab">
+                                    <label> File Name </label><input type='text' id='filename'>
+                                    <input type="submit" id="savesubmit" value="Download Catalogue as json">
+                                </form>
+                                -->
+                                <label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename_senscurve' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+                                <style>
+                                    .thintext{
+                                    font-size: 12px;
+                                    }
+                                </style>
+                                <style>
+                                    .slimtext{
+                                    font-size: 14px;
+                                    }
+				</style>
+                                <button onclick="savecurve()" class="download">download curve</button>
+                                <style>
+                                    .download {
+                                      background-color: #e7e7e7; /* Green */
+                                      border: none;
+                                      color: white;
+                                      padding: 1px 5px;
+                                      text-align: center;
+                                      text-decoration: none;
+                                      display: inline-block;
+                                      font-size: 8px;
+                                    }
+                                </style>
+                            </div>
+                            <div id="number_events" style="display:block;">
+                                <h5>Number of events:</h5>
+                                <p>Expected number of detection: <span id="total">____</span></p>
+    <label class="slimtext">(The actual number of detection is a Poisson variable round the expectation)</label>
+                            </div>              
+                            <div id="snr_result" style="display:none;">
+                                <h5>SNR and localization accuracy:</h5>
+                                <p>Expected SNR: <span id="e_snr">____</span></p>
+                                <p>Expected area (deg<sup>2</sup>): <span id="e_area">____</span></p>
+                            </div>
+							<div id="give_catalogues" style="display:none;">
+							<h5>Plot:</h5>
+							<form onchange="return plot_options_changed()" action="" id="plot_options" style="overflow: visible">
+								<label for="xvar" style="display: inline; width: 20%;">X-axis:</label>
+								<select name="xvar" id="xvar" style="display: inline; width: 20%;"></select>
+                                <label for="yvar" style="display: inline; width: 20%;">Y-axis:</label>
+								<select name="yvar" id="yvar" style="display: inline; width: 20%;"></select>
+<label class="slimtext">(if x-axis=y-axis, return a histogram)</label>
+                                <div id="if_with_errors" style="display:none;">
+                                <br>
+                                <input type = "checkbox" name="x_error_option" id="x_error_option"/>
+                                <label for="x_error_option">X-error</label>
+                                <input type="checkbox" name="y_error_option" id="y_error_option"/>
+								<label for="y_error_option">Y-error</label>
+                                </div>
+                                
+                                <br>
+								<input type = "checkbox" name="xlog" id="xlog" />
+								<label for="xlog">Logarithmic x-axis</label>
+								<input type = "checkbox" name="ylog" id="ylog" />
+								<label for="ylog">Logarithmic y-axis</label>
+                                
+                            
+                                
+                            
+							</form>							
+							<div id="plot" class="plot"></div>
+                            <br>
+                            <br>
+							<h5>Table:</h5>
+							<div id="table" style="font-size:12px; overflow-y: scroll; height: 500px;"></div>
+			    <br>				
+                            <div id="downloadtab" style="display:none;">
+                                <!--
+                                <form method="post" action="" onsubmit="savetable()" id="savetab">
+                                    <label> File Name </label><input type='text' id='filename'>
+                                    <input type="submit" id="savesubmit" value="Download Catalogue as json">
+                                </form>
+                                -->
+                                <label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+                                <button onclick="savetable()" class="download">download catalogue</button>
+                                
+                            </div>
+						</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js" ></script>
+		<script src="assets/js/browser.min.js" ></script>
+		<script src="assets/js/breakpoints.min.js" ></script>
+		<script src="assets/js/util.js" ></script>
+		<script src="assets/js/main.js" ></script>
+		<script src="assets/js/collapse.js" ></script>
+        <script src='assets/js/plotly-latest.min.js'></script>
+		<script src="assets/js/interactive_plot-earth3.js" ></script>
+		<!-- <script>
+			$(update_captcha_token);
+		</script>-->
+	</body>
+</html>

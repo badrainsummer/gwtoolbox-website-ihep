@@ -1,0 +1,594 @@
+<!DOCTYPE HTML>
+<!--
+     Phantom by HTML5 UP
+     html5up.net | @ajlkn
+     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>HE Toolbox</title>
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" href="/assets/favicon.png"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/plot.css" />
+		<link rel="stylesheet" href="assets/css/patches.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		<!-- <script src="https://www.google.com/recaptcha/api.js?render=6LchHMIUAAAAAGzHYwFRL6lW-9qqoMpiLMt52rz2"></script> -->
+		
+	</head>
+	
+
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+			
+			<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					
+					<!-- Logo -->
+					<!-- <a href="HEtoolbox.html" class="logo">
+						<div class="col-4"><img src="images/logogwtoolbox.jpg"  width="300"/></span></div>
+					</a> -->
+					<!--
+					<span class="icon2 stylelogo fas fa-tools"></span>
+					<a href="index.html" class="logo">
+						<span class="title">GW Toolbox</span>
+					</a>
+					-->
+					<!-- Nav -->
+					<nav>
+						<ul>
+							<li><a href="#menu">Menu</a></li>
+						</ul>
+					</nav>
+					
+				</div>
+			</header>
+			
+			<!-- Menu -->
+			<nav id="menu">
+				<h2>Menu</h2>
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="HEtoolbox.html">HEtoolbox</a></li>
+					<li><a href="BlackHole.html">BlackHole</a></li>
+					<li><a href="Neutron.html">Neutron Star</a></li>
+					<li><a href="sGRB.html">sGRB</a></li>
+					<li><a href="Binary.html">Binary</a></li>
+					<li><a href="/gradio/">AI Assistant</a></li>
+					<li><a href="https://code.ihep.ac.cn/caoty/gwtoolbox.git">Python Package</a></li>
+					<!-- <li><a href="documents.html">Documents</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="https://youtu.be/mdGZfIUXP_A">Demo on YouTube</a></li>
+					<li><a href="https://www.bilibili.com/video/BV14Q4y197H7?share_source=copy_web">Demo on bilibili</a></li> -->
+				</ul>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<div class="inner">
+					<h1>Neutron Star-binary system</h1>
+					<div class="row">
+						<div class="col-6 col-12-small">
+							<h2>Input:</h2>
+							<form action="cgi-bin/type-neutron.py" method="post" onchange="updatetype()" onsubmit="return getparameters()"  id="gettype_param" >
+								<h3>Generate Typical Neutron Star System:</h3>
+								<div class="radio-group">
+									<label><input type="radio" id="type_LMXB" name="type_kind" value="LMXB" checked> LMXB</label>
+									<label><input type="radio" id="type_AF-AMXP" name="type_kind" value="AF-AMXP"> AF-AMXP</label>
+									<label><input type="radio" id="type_AF-AXP" name="type_kind" value="AF-AXP"> AF-AXP</label>
+								</div>
+								<div class="radio-group" id="LMXB_type">
+									<label><input type="radio" id="type_LIS" name="type_state" value="LIS" checked> LIS</label>
+									<label><input type="radio" id="type_HIS" name="type_state" value="HIS"> HIS</label>
+									<label><input type="radio" id="type_SS" name="type_state" value="SS"> SS</label>
+									<label><input type="radio" id="type_HS" name="type_state" value="HS"> HS</label>
+								</div>
+								<div class="radio-group hidden" id="AF-AXP_type">
+									<label><input type="radio" id="type_pencil" name="type_AF-AXP" value="AF-AXP-pencil" checked> pencil</label>
+									<label><input type="radio" id="type_fan" name="type_AF-AXP" value="AF-AXP-fan"> fan</label>
+									<label><input type="radio" id="type_mix" name="type_AF-AXP" value="AF-AXP-mix"> mix</label>
+								</div>
+								<div>
+									<input name="recaptcha" id="recaptcha" type="hidden" >
+									<input type = "submit" id="submit_0" value = "Generate" >
+								</div>
+								<div id="status_typical"></div>
+							</form>
+							<form action="cgi-bin/neutron_classification.py" method="post" onsubmit="return submitcheck()" id="classification_check" >
+								<div class="input-section" id="NS_para">
+									<h3>Neutron Star Parameters:</h3>
+									<div class="param-line">
+										<label>Mass (Solar Mass):</label>
+										<input type="text" name="mass" id="mass">
+									</div>
+									<div class="param-line">
+										<label>Distance (kpc):</label>
+										<input type="text" name="distance" id="distance">
+									</div>
+									<div class="param-line">
+										<label>Radius (km):</label>
+										<input type="text" name="radius" id="radius">
+									</div>
+									<div class="param-line">
+										<label>Surface Magnetic Field (Gauss):</label>
+										<input type="text" name="Bsurf" id="Bsurf">
+									</div>
+									<div class="param-line">
+										<label>Period (s):</label>
+										<input type="text" name="P" id="P">
+									</div>
+                                </div>
+								<div class="input-section" id="AF_para">
+									<h3>Accretion Flow Parameters:</h3>
+									<div class="param-line">
+										<label>Accretion Rate (g/s):</label>
+										<input type="text" name="mdot" id="mdot">
+									</div>
+                                </div>
+								<div>
+									<input name="recaptcha" id="recaptcha" type="hidden" >
+									<input type = "submit" id="submit_1" value = "Check" >
+								</div>
+								<div id="check_status">Waiting for your input ...</div>
+							</form>
+							<form action="cgi-bin/form-neutron.py" method="post" onchange="updateform()" onsubmit="return submitform()" id="setup" >
+								<input type="hidden" name="type" id="type" value="">
+								<div id="alert_LMXB" name="alert_LMXB" style="display: none;">
+									<h3 style="text-align: center; color: orange;">The type is LMXB</h3>
+								</div>
+								<div id="alert_AMSP" name="alert_AMSP" style="display: none;">
+									<h3 style="text-align: center; color: red;">The type is AMSP</h3>
+								</div>
+								<div id="alert_AXP-pencil" name="alert_AXP-pencil" style="display: none;">
+									<h3 style="text-align: center; color: blue;">The type is AXP-pencil</h3>
+								</div>
+								<div id="alert_AXP-fan" name="alert_AXP-fan" style="display: none;">
+									<h3 style="text-align: center; color: blue;">The type is AXP-fan</h3>
+								</div>
+								<div id="alert_AXP-mix" name="alert_AXP-mix" style="display: none;">
+									<h3 style="text-align: center; color: blue;">The type is AXP-mix</h3>
+								</div>
+								<div id="alert_PPL" name="alert_PPL" style="display: none;">
+									<h3 style="text-align: center; color: steelblue;">The type is PPL</h3>
+								</div>
+								<div id="alert_PS" name="alert_PS" style="display: none;">
+									<h3 style="text-align: center; color: steelblue;">The type is PS</h3>
+								</div>
+								<div id="alert_bad" name="alert_bad" style="display: none;">
+									<h3 style="text-align: center; color: black;">This source cannot be classified</h3>
+								</div>
+								<div id="more_ifo" name="more_ifo" style="display: none;">
+									<div class="input-section" id="disc-fields" style="display: none;">
+										<div class="param-header">
+											<input type="checkbox" id="disc" name="disc" checked>
+											<h3>Disk Parameters:</h3>
+										</div>
+										<div id="disc_param" name="disc_param" style="display: block;">
+											<div class="param-line">
+												<label>Inclination Angle (deg):</label>
+												<input type="text" name="disc_theta" id="disc_theta">
+											</div>
+											<div class="param-line">
+												<label>Electron Temperature (keV):</label>
+												<input type="text" name="disc_Te" id="disc_Te">
+											</div>
+											<div class="param-line">
+												<label>Covering Fraction:</label>
+												<input type="text" name="disc_cov_frac" id="disc_cov_frac">
+											</div>
+											<div class="param-line">
+												<label>Corona Height (Rg):</label>
+												<input type="text" name="disc_H" id="disc_H">
+											</div>
+											<div class="param-line">
+												<label>Photon Index:</label>
+												<input type="text" name="disc_Gamma" id="disc_Gamma">
+											</div>
+											<div class="param-line">
+												<label>Iron Abundance (solar units):</label>
+												<input type="text" name="disc_Fe" id="disc_Fe">
+											</div>
+											<div class="param-line">
+												<label>Fe K-shell energy (kev):</label>
+												<input type="text" name="disc_KE" id="disc_KE">
+											</div>
+										</div>
+									</div>
+									<div class="input-section" id="surface-fields"  style="display: none;">
+										<div class="param-header">
+											<input type="checkbox" id="surface" name="surface" checked>
+											<h3>Surface Parameters:</h3>
+										</div>
+										<div id="surface_param" name="surface_param" style="display: block;">
+											<div class="param-line">
+												<label>Intrinsic Hotspot Radius (km):</label>
+												<input type="text" name="surface_r" id="surface_r">
+											</div>
+											<div class="param-line">
+												<label>Temperature (keV):</label>
+												<input type="text" name="surface_Tbb" id="surface_Tbb">
+											</div>
+											<div class="param-line">
+												<label>Electron Temperature (keV):</label>
+												<input type="text" name="surface_Te" id="surface_Te">
+											</div>
+											<div class="param-line">
+												<label>Covering Fraction:</label>
+												<input type="text" name="surface_cov_frac" id="surface_cov_frac">
+											</div>
+											<div class="param-line">
+												<label>Photon Index:</label>
+												<input type="text" name="surface_Gamma" id="surface_Gamma">
+											</div>
+											<div class="param-line">
+												<label>Electron Optical Depth:</label>
+												<input type="text" name="surface_tau" id="surface_tau">
+											</div>
+											<div class="param-line">
+												<label>Colatitude:</label>
+												<input type="text" name="surface_theta" id="surface_theta">
+											</div>
+											<div class="param-line">
+												<label>Observer inclination:</label>
+												<input type="text" name="surface_iota" id="surface_iota">
+											</div>
+										</div>
+									</div>
+									<div class="input-section" id="telescope" name="telescope" style="display: block;">
+										<div class="param-header">
+											<h3>Select Telescopes:</h3>
+										</div>
+										<div class="telescope-row">
+											<div class="param-line">
+												<input type="checkbox" id="Insight-HE" name="telescope" value="Insight-HE">
+												<label for="Insight-HE">Insight-HE</label>
+											</div>
+											<div class="param-line">
+												<input type="checkbox" id="Insight-LE" name="telescope" value="Insight-LE">
+												<label for="Insight-LE">Insight-LE</label>
+											</div>
+										</div>
+										<div class="telescope-row">
+											<div class="param-line">
+												<input type="checkbox" id="Insight-ME" name="telescope" value="Insight-ME">
+												<label for="Insight-ME">Insight-ME</label>
+											</div>
+											<div class="param-line">
+												<input type="checkbox" id="EP-FXT" name="telescope" value="EP-FXT" checked>
+												<label for="EP-FXT">EP-FXT</label>
+											</div>
+										</div>
+									</div>
+									<div>
+										<input name="recaptcha" id="recaptcha" type="hidden" >
+										<input type = "submit" id="submit_LMXB" value = "Observe" >
+									</div>
+								</div>
+							</form>
+                        </div>
+						<style>
+							.input-section {
+								margin-left: 0;
+								margin-top: 1.2em;
+							}
+							.input-section .param-line {
+								margin-left: 2em;
+								display: flex;
+								align-items: baseline;
+								margin-bottom: 0.5em;
+							}
+							.input-section label {
+								width: 250px;
+								font-weight: normal;
+							}
+							.input-section input[type="text"] {
+								flex: 1;
+								padding: 4px 6px;
+								border: 1px solid #ccc;
+								border-radius: 4px;
+							}
+							.input-section h3 {
+								margin-bottom: 0.6em;
+								margin-top: 0.2em;
+							}
+							.range-inputs {
+								display: flex;
+								align-items: center;
+								gap: 6px;
+								flex: 1;
+							}
+							.range-inputs input[type="text"] {
+								width: 80px;
+								height: 40px;  
+								padding: 4px 6px;
+								border: 1px solid #ccc;
+								border-radius: 4px;
+								font-size: 18px;
+							}
+							.range-inputs .dash {
+								font-weight: bold;
+								color: #555;
+							}
+							.param-header {
+								display: flex;
+								align-items: center;
+								gap: 8px;
+								margin-bottom: 0.6em;
+								margin-left: 0.2em;
+							}
+							.param-header input[type="checkbox"] {
+								all: unset;
+								appearance: checkbox;
+								-webkit-appearance: checkbox;
+								width: 22px;
+								height: 22px;
+								cursor: pointer;
+								margin-right: 10px;
+								position: relative;
+								top: -3px;
+								flex-shrink: 0;
+							}
+							.param-header {
+								display: flex;
+								align-items: center;
+								gap: 6px;
+								margin-bottom: 0.6em;
+								margin-left: 0em;
+							}
+							.radio-group {
+								display: flex;
+								gap: 4em;
+								align-items: center;
+								margin-left: 2em;
+								margin-bottom: 2em;
+							}
+							.radio-group label {
+								display: inline-flex;
+								align-items: center;
+								cursor: pointer;
+							}
+							.radio-group input {
+								margin-right: 5px;
+							}
+							.radio-group input[type="radio"] {
+								all: revert;
+								appearance: auto;
+								-webkit-appearance: radio;
+								accent-color: #007bff;
+								margin-right: 6px;
+								width: 16px;
+								height: 16px;
+								cursor: pointer;
+							}
+							.hidden {
+								display: none !important;
+							}
+							#telescope .telescope-row {
+								display: flex;
+								gap: 20px;
+								margin-left: 2em;
+								margin-bottom: 0.5em;
+							}
+							#telescope .param-line {
+								display: flex;
+								align-items: center;
+							}
+							#telescope input[type="checkbox"] {
+								width: 20px;
+								height: 20px;
+								cursor: pointer;
+								margin-right: 6px;
+							}
+						</style>
+
+						<div class="col-6 col-12-small">
+							<div class="param-header" id="sketch" name="sketch" style="margin-top: 60px; display: none;">
+								<h3>Sketchs:</h3>
+							</div>
+							<div id="sketch_LMXB" name="sketch_LMXB" style="text-align:center; display: none;" >
+								<img src="images/LMXB.png" alt="sketch_LMXB" width="600">
+							</div>
+							<div id="sketch_AMSP" name="sketch_AMSP" style="text-align:center; display: none;" >
+								<img src="images/AMSP.png" alt="sketch_AMSP" width="600">
+							</div>
+							<div id="sketch_AF-pencil" name="sketch_AF-pencil" style="text-align:center; display: none;" >
+								<img src="images/AF-pencil.png" alt="sketch_AF-pencil" width="600">
+							</div>
+							<div id="sketch_AF-fan" name="sketch_AF-fan" style="text-align:center; display: none;" >
+								<img src="images/AF-fan.png" alt="sketch_AF-fan" width="600">
+							</div>
+							<div id="sketch_AF-mix" name="sketch_AF-mix" style="text-align:center; display: none;" >
+								<img src="images/AF-mix.png" alt="sketch_AF-mix" width="600">
+							</div>
+							<div id="sketch_PPL" name="sketch_PPL" style="text-align:center; display: none;" >
+								<img src="images/PPL.png" alt="sketch_PPL" width="600">
+							</div>
+							<h2>Result:</h2>
+                            <div id="status">Waiting for your input ...</div>
+                            
+							<div id="normal_plot" style="display: block;">
+								<div id="TSpectrum" class="plot" style="width:800px; height:600px; margin-bottom:100px;">
+									<h5>Theoretical Spectrum:</h5>
+									<div id="plotTSpectrum" class="plot" style="width:800px; height:500px; margin-bottom:50px;"></div>
+									<div id="downloadTSpectrum" style="display:none;">
+										<!--
+										<form method="post" action="" onsubmit="savetable()" id="savetab">
+											<label> File Name </label><input type='text' id='filename'>
+											<input type="submit" id="savesubmit" value="Download Catalogue as json">
+										</form>
+										-->
+										<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+										<style>
+											.thintext{
+											font-size: 12px;
+											}
+										</style>
+										<style>
+											.slimtext{
+											font-size: 14px;
+											}
+										</style>
+										<button onclick="savecurve_TSpectrum()" class="download">download curve</button>
+										<style>
+											.download {
+											background-color: #e7e7e7; /* Green */
+											border: none;
+											color: white;
+											padding: 1px 5px;
+											text-align: center;
+											text-decoration: none;
+											display: inline-block;
+											font-size: 8px;
+											}
+										</style>
+									</div>
+								</div>
+								<div id="OSpectrum" class="plot" style="width:800px; height:600px; margin-bottom:100px;">
+									<h5>Observe Spectrum:</h5>
+									<div id="plotOSpectrum" class="plot" style="width:800px; height:500px; margin-bottom:50px;"></div>
+									<div id="downloadOSpectrum" style="display:none;">
+										<!--
+										<form method="post" action="" onsubmit="savetable()" id="savetab">
+											<label> File Name </label><input type='text' id='filename'>
+											<input type="submit" id="savesubmit" value="Download Catalogue as json">
+										</form>
+										-->
+										<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+										<style>
+											.thintext{
+											font-size: 12px;
+											}
+										</style>
+										<style>
+											.slimtext{
+											font-size: 14px;
+											}
+										</style>
+										<button onclick="savecurve_OSpectrum()" class="download">download curve</button>
+										<style>
+											.download {
+											background-color: #e7e7e7; /* Green */
+											border: none;
+											color: white;
+											padding: 1px 5px;
+											text-align: center;
+											text-decoration: none;
+											display: inline-block;
+											font-size: 8px;
+											}
+										</style>
+									</div>
+								</div>
+							</div>
+
+							<div id="AMSP_plot" style="display: none;">
+								<div id="TSpectrum_phase" class="plot" style="width:800px; height:600px; margin-bottom:100px; display: block;">
+									<h5>Theoretical Spectrum:</h5>
+									<div id="plotts" class="plot" style="width:800px; height:500px; margin-bottom:20px;"></div>
+									<div id="phase-control_1" style="display:none;">
+										<label for="phaseSlider_1" style="margin-right:10px;">spin phase (deg): </label>
+										<input type="range" id="phaseSlider_1" min="0" max="9" step="1" value="0" style="width:500px;">
+										<span id="phaseValue_1">0π</span>
+									</div>
+									<div id="downloadts" style="display:none;">
+										<!--
+										<form method="post" action="" onsubmit="savetable()" id="savetab">
+											<label> File Name </label><input type='text' id='filename'>
+											<input type="submit" id="savesubmit" value="Download Catalogue as json">
+										</form>
+										-->
+										<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+										<style>
+											.thintext{
+											font-size: 12px;
+											}
+										</style>
+										<style>
+											.slimtext{
+											font-size: 14px;
+											}
+										</style>
+										<button onclick="savecurve_ts()" class="download">download curve</button>
+										<style>
+											.download {
+											background-color: #e7e7e7; /* Green */
+											border: none;
+											color: white;
+											padding: 1px 5px;
+											text-align: center;
+											text-decoration: none;
+											display: inline-block;
+											font-size: 8px;
+											}
+										</style>
+									</div>
+								</div>
+								<div id="OSpectrum_phase" class="plot" style="width:800px; height:600px; margin-bottom:100px; display: block;">
+									<h5>Observe Spectrum:</h5>
+									<div id="plotos" class="plot" style="width:800px; height:500px; margin-bottom:20px;"></div>
+									<div id="phase-control_2" style="display:none;">
+										<label for="phaseSlider_2" style="margin-right:10px;">spin phase (deg): </label>
+										<input type="range" id="phaseSlider_2" min="0" max="9" step="1" value="0" style="width:500px;">
+										<span id="phaseValue_2">0π</span>
+									</div>
+									<div id="downloados" style="display:none;">
+										<!--
+										<form method="post" action="" onsubmit="savetable()" id="savetab">
+											<label> File Name </label><input type='text' id='filename'>
+											<input type="submit" id="savesubmit" value="Download Catalogue as json">
+										</form>
+										-->
+										<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+										<style>
+											.thintext{
+											font-size: 12px;
+											}
+										</style>
+										<style>
+											.slimtext{
+											font-size: 14px;
+											}
+										</style>
+										<button onclick="savecurve_os()" class="download">download curve</button>
+										<style>
+											.download {
+											background-color: #e7e7e7; /* Green */
+											border: none;
+											color: white;
+											padding: 1px 5px;
+											text-align: center;
+											text-decoration: none;
+											display: inline-block;
+											font-size: 8px;
+											}
+										</style>
+									</div>
+								</div>
+							</div>
+
+							<button id="toggleYSCALE" style="display: none;">Linear / Log</button>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js" ></script>
+		<script src="assets/js/browser.min.js" ></script>
+		<script src="assets/js/breakpoints.min.js" ></script>
+		<script src="assets/js/util.js" ></script>
+		<script src="assets/js/main.js" ></script>
+		<script src="assets/js/collapse.js" ></script>
+        <script src='assets/js/plotly-latest.min.js'></script>
+		<script src="assets/js/interactive_plot-neutron.js" ></script>
+		<!-- <script>
+			$(update_captcha_token);
+		</script>-->
+	</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE HTML>
+<!--
+     Phantom by HTML5 UP
+     html5up.net | @ajlkn
+     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>HE Toolbox</title>
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" href="/assets/favicon.png"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/plot.css" />
+		<link rel="stylesheet" href="assets/css/patches.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		<!-- <script src="https://www.google.com/recaptcha/api.js?render=6LchHMIUAAAAAGzHYwFRL6lW-9qqoMpiLMt52rz2"></script> -->
+		
+	</head>
+	
+
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+			
+			<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					
+					<!-- Logo -->
+					<!-- <a href="HEtoolbox.html" class="logo">
+						<div class="col-4"><img src="images/logogwtoolbox.jpg"  width="300"/></span></div>
+					</a> -->
+					<!--
+					<span class="icon2 stylelogo fas fa-tools"></span>
+					<a href="index.html" class="logo">
+						<span class="title">GW Toolbox</span>
+					</a>
+					-->
+					<!-- Nav -->
+					<nav>
+						<ul>
+							<li><a href="#menu">Menu</a></li>
+						</ul>
+					</nav>
+					
+				</div>
+			</header>
+			
+			<!-- Menu -->
+			<nav id="menu">
+				<h2>Menu</h2>
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="HEtoolbox.html">HEtoolbox</a></li>
+					<li><a href="BlackHole.html">BlackHole</a></li>
+					<li><a href="Neutron.html">Neutron Star</a></li>
+					<li><a href="sGRB.html">sGRB</a></li>
+					<li><a href="Binary.html">Binary</a></li>
+					<li><a href="/gradio/">AI Assistant</a></li>
+					<li><a href="https://code.ihep.ac.cn/sxyi/high-energy-universe-toolbox.git">Python Package</a></li>
+					<!-- <li><a href="documents.html">Documents</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="https://youtu.be/mdGZfIUXP_A">Demo on YouTube</a></li>
+					<li><a href="https://www.bilibili.com/video/BV14Q4y197H7?share_source=copy_web">Demo on bilibili</a></li> -->
+				</ul>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<div class="inner">
+					<h1>short Gamma-ray Bursts</h1>
+					<div class="row">
+						 <div class="col-6 col-12-small">
+							<h2>Input:</h2>
+							<form action="cgi-bin/form-sgrb.py" method="post" onchange="updateform()" onsubmit="return submitform()" id="setup" >
+								<div class="param-header">
+									<h3>GRB Parameters:</h3>
+								</div>
+								<div class="input-section" id="BH_para">
+									<div class="param-line">
+										<label>Redshift:</label>
+										<input type="text" name="z" id="z" placeholder="0.06">
+									</div>
+									<div class="param-line">
+										<label>Power law index:</label>
+										<input type="text" name="p" id="p" placeholder="2.8">
+									</div>
+									<div class="param-line">
+										<label>Width (cm):</label>
+										<input type="text" name="deltar" id="deltar" placeholder="1e12">
+									</div>
+									<div class="param-line">
+										<label>Bulk Lorentz factor:</label>
+										<input type="text" name="Gamma" id="Gamma" placeholder="150">
+									</div>
+									<div class="param-line">
+										<label>Dissipation radius:</label>
+										<input type="text" name="r0" id="r0" placeholder="2e15">
+									</div>
+									<div class="param-line">
+										<label>Magnetic field (Gauss):</label>
+										<input type="text" name="B0_prime" id="B0_prime" placeholder="3">
+									</div>
+									<div class="param-line">
+										<label>Minimum Lorentz factor:</label>
+										<input type="text" name="gamma_m" id="gamma_m" placeholder="2e5">
+									</div>
+									<div class="param-line">
+										<label>Maximum Lorentz factor:</label>
+										<input type="text" name="gamma_M" id="gamma_M" placeholder="1e7">
+									</div>
+									<div class="param-line">
+										<label>number of rings:</label>
+										<input type="text" name="N_rings" id="N_rings" placeholder="180">
+									</div>
+                                </div>
+								
+								<div class="input-section" id="telescope" name="telescope">
+									<div class="param-header">
+										<h3>Select Telescopes:</h3>
+									</div>
+									<div class="telescope-row">
+										<div>
+											<input type="checkbox" id="SVOM-GRM" name="telescope" value="SVOM-GRM" checked>
+											<label for="SVOM-GRM">SVOM-GRM</label>
+										</div>
+										<div>
+											<input type="checkbox" id="Fermi-GBM" name="telescope" value="Fermi-GBM">
+											<label for="Fermi-GBM">Fermi-GBM</label>
+										</div>
+										<div>
+											<input type="checkbox" id="GECAM-B" name="telescope" value="GECAM-B">
+											<label for="GECAM-B">GECAM</label>
+										</div>
+									</div>
+								</div>
+
+								<div class="param-header">
+									<h3>Output Type:</h3>
+								</div>
+								<div class="radio-group">
+									<label><input type="radio" id="output_light" name="output_type" value="light_curve" checked> Light Curve</label>
+									<label><input type="radio" id="output_spec" name="output_type" value="spectrum"> Spectrum</label>
+								</div>
+								<div class="input-section" id="E_range" name="E_range" style="display: block;">
+									<div class="param-line">
+										<label for="E_range">Energy Range (eV):</label>
+										<div class="range-inputs">
+											<input type="text" id="E_min" name="E_min" placeholder="min">
+											<span class="dash">–</span>
+											<input type="text" id="E_max" name="E_max" placeholder="max">
+										</div>
+									</div>
+								</div>
+								<div class="input-section" id="T_range" name="T_range" style="display: none;">
+									<div class="param-line">
+										<label for="T_range">Time Range (s):</label>
+										<div class="range-inputs">
+											<input type="text" id="T_min" name="T_min" placeholder="min">
+											<span class="dash">–</span>
+											<input type="text" id="T_max" name="T_max" placeholder="max">
+										</div>
+									</div>
+								</div>
+								<div>
+									<input name="recaptcha" id="recaptcha" type="hidden" >
+									<input type = "submit" id="submit" value = "Observe" >
+								</div>
+							</form>
+                        </div>
+						<style>
+							.input-section {
+								margin-left: 0;
+								margin-top: 1.2em;
+							}
+							.input-section .param-line {
+								margin-left: 2em;
+								display: flex;
+								align-items: baseline;
+								margin-bottom: 0.5em;
+							}
+							.input-section label {
+								width: 250px;
+								font-weight: normal;
+							}
+							.input-section input[type="text"] {
+								flex: 1;
+								padding: 4px 6px;
+								border: 1px solid #ccc;
+								border-radius: 4px;
+							}
+							.input-section input[type="text"]::placeholder {
+								font-size: 18px;
+								color: #888;
+							}
+							.input-section h3 {
+								margin-bottom: 0.6em;
+								margin-top: 0.2em;
+							}
+							.range-inputs {
+								display: flex;
+								align-items: center;
+								gap: 6px;
+								flex: 1;
+							}
+							.range-inputs input[type="text"] {
+								width: 80px;
+								height: 40px;  
+								padding: 4px 6px;
+								border: 1px solid #ccc;
+								border-radius: 4px;
+								font-size: 18px;
+							}
+							.range-inputs .dash {
+								font-weight: bold;
+								color: #555;
+							}
+							.param-header {
+								display: flex;
+								align-items: center;
+								gap: 2px;
+								margin-bottom: -1.5em;
+								margin-left: 0em;
+							}
+							.param-header input[type="checkbox"] {
+								all: unset;
+								appearance: checkbox;
+								-webkit-appearance: checkbox;
+								width: 22px;
+								height: 22px;
+								cursor: pointer;
+								margin-right: 10px;
+								position: relative;
+								top: -3px;
+								flex-shrink: 0;
+							}
+							.radio-group {
+								display: flex;
+								gap: 8em;
+								align-items: center;
+								margin-left: 2em;
+								margin-bottom: 2em;
+							}
+							.radio-group label {
+								display: inline-flex;
+								align-items: center;
+								cursor: pointer;
+							}
+							.radio-group input {
+								margin-right: 5px;
+							}
+							.radio-group input[type="radio"] {
+								all: revert;
+								appearance: auto;
+								-webkit-appearance: radio;
+								accent-color: #007bff;
+								margin-right: 6px;
+								width: 16px;
+								height: 16px;
+								cursor: pointer;
+							}
+							#telescope .telescope-row {
+								display: grid;
+								grid-template-columns: repeat(3, minmax(0, auto));
+								gap: 0px;
+								align-items: center;
+								margin-left: 2em;
+								margin-bottom: 2em;
+							}
+							#telescope .param-line {
+								display: flex;
+								align-items: center;
+							}
+							#telescope input[type="checkbox"] {
+								width: 20px;
+								height: 20px;
+								cursor: pointer;
+								margin-right: 6px;
+							}
+						</style>
+
+						<div class="col-6 col-12-small">
+							<h2>Result:</h2>
+                            <div id="status">Waiting for your input ...</div>
+
+							<div id="TLightcurve" class="plot" style="width:800px; height:600px; margin-bottom:100px; display: block;">
+								<h5>Theoretical Lightcurve:</h5>
+								<div id="plotTLightcurve" class="plot" style="width:800px; height:500px; margin-bottom:50px;"></div>
+								<div id="downloadTLightcurve" style="display:none;">
+									<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+									<style>
+										.thintext{
+										font-size: 12px;
+										}
+									</style>
+									<style>
+										.slimtext{
+										font-size: 14px;
+										}
+									</style>
+									<button onclick="savecurve_TLightcurve()" class="download">download curve</button>
+									<style>
+										.download {
+										background-color: #e7e7e7; /* Green */
+										border: none;
+										color: white;
+										padding: 1px 5px;
+										text-align: center;
+										text-decoration: none;
+										display: inline-block;
+										font-size: 8px;
+										}
+									</style>
+								</div>
+							</div>
+                                      
+							<div id="OLightcurve" class="plot" style="width:800px; height:600px; margin-bottom:100px; display: block;">
+								<h5>Observe Lightcurve:</h5>
+								<div id="plotOLightcurve" class="plot" style="width:800px; height:500px; margin-bottom:50px;"></div>
+								<div id="downloadOLightcurve" style="display:none;">
+									<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+									<style>
+										.thintext{
+										font-size: 12px;
+										}
+									</style>
+									<style>
+										.slimtext{
+										font-size: 14px;
+										}
+									</style>
+									<button onclick="savecurve_OLightcurve()" class="download">download curve</button>
+									<style>
+										.download {
+										background-color: #e7e7e7; /* Green */
+										border: none;
+										color: white;
+										padding: 1px 5px;
+										text-align: center;
+										text-decoration: none;
+										display: inline-block;
+										font-size: 8px;
+										}
+									</style>
+								</div>
+							</div>
+                            
+							<div id="TSpectrum" class="plot" style="width:800px; height:600px; margin-bottom:100px; display: none">
+								<h5>Theoretical Spectrum:</h5>
+								<div id="plotTSpectrum" class="plot" style="width:800px; height:500px; margin-bottom:50px;"></div>
+								<div id="downloadTSpectrum" style="display:none;">
+									<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+									<style>
+										.thintext{
+										font-size: 12px;
+										}
+									</style>
+									<style>
+										.slimtext{
+										font-size: 14px;
+										}
+									</style>
+									<button onclick="savecurve_TSpectrum()" class="download">download curve</button>
+									<style>
+										.download {
+										background-color: #e7e7e7; /* Green */
+										border: none;
+										color: white;
+										padding: 1px 5px;
+										text-align: center;
+										text-decoration: none;
+										display: inline-block;
+										font-size: 8px;
+										}
+									</style>
+								</div>
+							</div>
+                                      
+							<div id="OSpectrum" class="plot" style="width:800px; height:600px; margin-bottom:100px; display: none">
+								<h5>Observe Spectrum:</h5>
+								<div id="plotOSpectrum" class="plot" style="width:800px; height:500px; margin-bottom:50px;"></div>
+								<div id="downloadOSpectrum" style="display:none;">
+									<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+									<style>
+										.thintext{
+										font-size: 12px;
+										}
+									</style>
+									<style>
+										.slimtext{
+										font-size: 14px;
+										}
+									</style>
+									<button onclick="savecurve_OSpectrum()" class="download">download curve</button>
+									<style>
+										.download {
+										background-color: #e7e7e7; /* Green */
+										border: none;
+										color: white;
+										padding: 1px 5px;
+										text-align: center;
+										text-decoration: none;
+										display: inline-block;
+										font-size: 8px;
+										}
+									</style>
+								</div>
+							</div>
+
+							<button id="toggleYSCALE" style="display: none;">Linear / Log</button>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js" ></script>
+		<script src="assets/js/browser.min.js" ></script>
+		<script src="assets/js/breakpoints.min.js" ></script>
+		<script src="assets/js/util.js" ></script>
+		<script src="assets/js/main.js" ></script>
+		<script src="assets/js/collapse.js" ></script>
+        <script src='assets/js/plotly-latest.min.js'></script>
+		<script src="assets/js/interactive_plot-sgrb.js" ></script>
+		<!-- <script>
+			$(update_captcha_token);
+		</script>-->
+	</body>
+</html>

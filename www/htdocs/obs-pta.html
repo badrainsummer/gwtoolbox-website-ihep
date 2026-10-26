@@ -1,0 +1,405 @@
+<!DOCTYPE HTML>
+<!--
+	 Phantom by HTML5 UP
+	 html5up.net | @ajlkn
+	 Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>GW Toolbox</title>
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" href="/assets/favicon.png"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/patches.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		<!-- <script src="https://www.google.com/recaptcha/api.js?render=6LchHMIUAAAAAGzHYwFRL6lW-9qqoMpiLMt52rz2"></script> -->
+	</head>
+    
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+
+			<!-- Header -->
+			<header id="header">
+				<div class="inner">
+
+					<!-- Logo -->
+                                        <!--
+					<span class="icon2 stylelogo fas fa-tools"></span>
+					<a href="index.html" class="logo">
+						<span class="title">GW Toolbox</span>
+					</a>
+                                        -->
+                                        <a href="index.html" class="logo">
+                                         <div class="col-4"><img src="images/logogwtoolbox.jpg"  width="300"/></span></div>
+          <!--<span class="icon2 stylelogo fas fa-tools"></span>-->
+            <!--<span class="title">GW-Universe Toolbox</span>-->
+                                        </a>
+
+					<!-- Nav -->
+					<nav>
+						<ul>
+							<li><a href="#menu">Menu</a></li>
+						</ul>
+					</nav>
+
+				</div>
+			</header>
+
+			<!-- Menu -->
+			<nav id="menu">
+				<h2>Menu</h2>
+				<ul>
+					<li><a href="index.html">Home</a></li>
+                    <!--
+					<li><a href="quick-start.html">Quick start</a></li>
+                    -->
+					<li><a href="GWtoolbox.html">GWtoolbox</a></li>
+					<li><a href="obs-earth.html">Earth</a></li>
+					<li><a href="obs-multimessenger.html">GW/GRB joint detection</a></li>
+         				<li><a href="obs-space.html">Space</a></li>
+					<li><a href="obs-pta.html">PTA</a></li>
+					<li><a href="/gradio/">AI Assistant</a></li>
+                                        <li><a href="population_model.html">Population Models</a></li>
+                                        <li><a href="https://code.ihep.ac.cn/caoty/gwtoolbox.git">Python Package</a></li>
+          				<li><a href="documents.html">Documents</a></li>
+          				<li><a href="about.html">About</a></li>
+         				<li><a href="https://youtu.be/mdGZfIUXP_A">Demo on YouTube</a></li>
+          				<li><a href="https://www.bilibili.com/video/BV14Q4y197H7?share_source=copy_web">Demo on blibli</a></li>
+				</ul>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<div class="inner">
+					<h1>Pulsar Timing Array</h1>
+					<div class="row">
+						<div class="col-6 col-12-small">
+							<form action = "/cgi-bin/form-pta.py" method = "post" onchange="updateform()" onsubmit="return submitform()" >
+								<h3>Input:</h3>
+								<!-- <th>Setup:</th><th>Detector:</th><th>Populations:</th>-->
+                                    <label for="plan">Select your Pulsar Timing Array</label>
+								<select name="plan" id="plan">
+									<option value="0">Future PTAs</option>
+                                    <option value="-1" selected>Existing PTAs</option>
+                                </select>
+                                <div id="ifFuture" class="indent" style="display: none;">
+                                    <label for="PTA_future">Future Observation on: </label>
+                                    <select name="PTA_future" id="PTA_future">
+                                        <option value= "EPTA"> <p> EPTA+Future Observation </p></option> 
+                                        <option value= "PPTA"> <p> PPTA+Future Observation </p></option> 
+                                        <option value= "NanoGrav"> <p> NANOGrav+Future Observation </p></option> 
+                                        <option value= "IPTA"> <p> IPTA+Future Observation </p></option> 
+                                    </select>
+                                    <label for="T">Future observing time [years, takes integer]:</label>
+                                    <input type = "text" id="T" name = "T" value = "10" />
+                                    <label for="dt">Average gap between observations (Cadence) [day, takes integer]:</label>
+                                    <input type = "text" id="dt" name = "dt" value = "1" />
+                                    <label for="dt">Number of new pulars to be included per year [takes integer]:</label>
+                                    <input type = "text" id="Ndot" name = "Ndot" value = "2" />
+                                </div>
+                             
+                                <div id="ifExisting" class="indent" style="display: none;">
+                                    <label for="PTA">Select the existing PTAs: </label>
+                                    <select name="PTA" id="PTA">
+                                        <option value= "EPTA"> <p> EPTA</p></option> 
+                                        <option value= "PPTA"> <p> PPTA</p></option> 
+                                        <option value= "NanoGrav"><p>NANOGrav</p></option> 
+                                        <option value= "IPTA"> <p>IPTA</p></option> 
+                                    </select>
+                                </div>
+								
+
+								<label>Target:</label>
+                                
+								<select name="IDsource" id="IDsource">
+                                    <option value="-1">Individual Supermassive BH binary (SNR calculation)</option>
+                                    <option value="1">Individual Supermassive BH binary (Sky-ave Sens.Curve)</option>
+                                    <option value="0" selected> Stochastic GW background (Upper Limit)</option>
+                                    
+                                </select>
+                                
+				<div id="ifindividalBH" class="indent" style="display:none">
+                                    <label> Ecliptic Coordiantes (Geocentric):</label>
+                                    <input type="text" id="lambda" name="lambda" style="display: inline; width: 49%;" placeholder="Longitude (hh:mm:ss)" value="0"/>
+                                    <input type="text" id="beta" name="beta" style="display: inline; width: 49%;" placeholder="Latitude (dd:mm:ss)" value="0"/>
+        
+                                    
+                                    <label for="fs">GW Frequency [year<sup>-1</sup>]: </label>
+                                    <input type="text" id="fs" name="fs" value="1"/>
+                                    <div>
+                                        <!--<input type="text" id="flag_inputs" name="flag_inputs" value="hs" style="display:none">-->
+    					<input type="radio" id="inputs1"
+     					name="flag_inputs" value="hs" checked="checked">
+    					<label for="inputs1">strain amplitude</label>
+    					<input type="radio" id="inputs2"
+     					name="flag_inputs" value="masses">
+    					<label for="inputs2">Masses, Distance</label>
+                                    </div>
+                                    <div id="if_inputs1" class="indent" style="display:none">
+                                        <label for="A">GW amplitude [sci-notation, e.g, 1e-15]: </label>
+                                        <input type="text" id="A" name="A" value="1e-15"/>
+                                    </div>
+                                    <div id="if_inputs2" class="indent" style="display:none">
+                                        <label for="m1">m1 [soloar masses]: </label>
+                                        <input type="text" id="m1" name="m1" value="1e6"/>
+                                        <label for="m2">m2 [soloar masses]: </label>
+                                        <input type="text" id="m2" name="m2" value="
+1e6"/>
+                                        <label for="D">D [Mpc]: </label>
+                                        <input type="text" id="Dl" name="Dl" value="
+1"/>
+                                    </div>
+                                </div> 
+                                <div id="ifSens" class="indent" style="display:none">
+                                    <label for="rhostar"> SNR threshold: </label>
+                                    <input type="text" id="rhostar" name="rhostar" stype="display:inlinel width:50%;" value="50" />   
+                                </div>
+                                
+                                <div id="ifSGWB" class="indent" style="display:none">
+                                    <label for="cosmology" style="display:none;">Cosmology:</label>
+                                                                <select name="cosmology" id="cosmology" style="display:none;">
+                                                                        <option value = "FlatLambdaCDM"> customised Flat &Lambda;CDM </option>
+                                                                        <option value = "WMAP5" > Flat &Lambda;CDM - WMAP5  </option>
+                                                                        <option value = "WMAP7" > Flat &Lambda;CDM - WMAP7  </option>
+                                                                        <option value = "WMAP9" > Flat &Lambda;CDM - WMAP9  </option>
+                                                                        <option value = "Planck13" > Flat &Lambda;CDM - Planck13  </option>
+                                                                        <option value = "Planck15" selected> Flat &Lambda;CDM - Planck15  </option>
+                                                                </select> 
+                                                                <div id = "selfCosmos" style="display: none;">
+                                                                    <label for="H0" style="display: inline; width: 20%;"> H0(km/s/Mpc): </label><input type="text" name="H0" id="H0" value="70" style="display: inline; width: 15%;"/>
+                                                                    <label for="omega" style="display: inline; width: 20%;"> &Omega;0: </label><input type="text" name="omega" id="omega" value="0.3" style="display: inline; width: 15%;"/>
+                                                                    <label for="Tcmb" style="display: inline; width: 20%;"> Tcmb (K): </label><input type="text" name="Tcmb" id="Tcmb" value="2.725" style="display: inline; width: 15%;"/>
+                                                                </div>
+                                    <label>Type of Stochastic Background: </label>
+                                    <select name="typeSGWB" id="typeSGWB">
+                                        <option value="-1">Supermassive BHs Overlaps</option>
+                                        <option value="0">Cosmic String collision</option>
+                                        <option value="1">Primordial Relics</option>
+                                        <option value="2">Self Define (Power Law Spectrum)</option>
+                                    </select>
+                                    <div id="selfgamma" style="display: none;">
+                                    	<label for="gamma" style="display: inline; width: 20%;"> &gamma; (Spectrum index):</label><input type="text" name="gamma" id="gamma" value="-1" style="display: inline; width: 15%;"/>
+                                    </div>
+                                    <label>SNR threshold:</label>
+                                    <input type="text" id="SNRcri" name="SNRcri" stype="display:inlinel width:50%;" value="100" />
+                                </div>
+                       <!--
+								<label>Desired outputs:</label>
+								<div>
+									<input type = "radio" id = "output0" name = "output" value = "sensfun" disabled />
+									<label for="output0" class="disabled"> Sensitivity function </label>
+								</div>
+								<div>
+									<input type = "radio" id = "output1" name = "output" value = "number" />
+									<label for="output1"> Total number </label>
+								</div>
+								<div>
+									<input type = "radio" id = "output2" name = "output" value = "table"/>
+									<label for="output2"> Catalogue </label>
+									<div id="tablepar" class="indent" style="display:none">
+										<label>Maximum sample size and variable selection for catalogue:</label> 
+									<input type = "text" id = "output_size_table"  name = "output_size_table" value = "10" />
+										<div class="row">
+											<div class="col-12">
+												<input type="checkbox" id="tab_mass1" name="tab_mass1">
+												<label for="tab_mass1">Mass 1</label>
+												<div class="indent">
+													<input type="checkbox" id="tab_mass1_err" name="tab_mass1_err">
+													<label for="tab_mass1_err">Mass 1 error</label>
+												</div>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_mass2" name="tab_mass2">
+												<label for="tab_mass2">Mass 2</label>
+												<div class="indent">
+													<input type="checkbox" id="tab_mass2_err" name="tab_mass2_err">
+													<label for="tab_mass2_err">Mass 2 error</label>
+												</div>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_z" name="tab_z">
+												<label for="tab_z">Redshift</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_chi1" name="tab_chi1">
+												<label for="tab_chi1">Spin 1</label>
+												<div class="indent">
+													<input type="checkbox" id="tab_chi1_err" name="tab_chi1_err">
+													<label for="tab_chi1_err">Spin 1 error</label>
+											</div>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_chi2" name="tab_chi2">
+												<label for="tab_chi2">Spin 2</label>
+												<div class="indent">
+													<input type="checkbox" id="tab_chi2_err" name="tab_chi2_err">
+													<label for="tab_chi2_err">Spin 2 error</label>
+												</div>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_phi1" name="tab_phi1">
+												<label for="tab_phi1">Spin angle 1</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_phi2" name="tab_phi2">
+												<label for="tab_phi2">Spin angle 2</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_tc" name="tab_tc">
+												<label for="tab_tc">Coalescence time</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_d" name="tab_d">
+												<label for="tab_d">Distance</label>
+												<div class="indent">
+													<input type="checkbox" id="tab_d_err" name="tab_d_err">
+													<label for="tab_d_err">Distance error</label>
+												</div>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_lambda" name="tab_lambda">
+												<label for="tab_lambda">Ecliptic latitude</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_beta" name="tab_beta">
+												<label for="tab_beta">Ecliptic longitude</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_psi" name="tab_psi">
+												<label for="tab_psi">Phase at coalescence</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="tab_omega_err" name="tab_omega_err">
+												<label for="tab_omega_err">Omega error</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<input type = "radio" id = "output3" name = "output" value = "plot_hist"/>
+									<label for="output3"> Plot histogram </label>
+									<div id="tablehist" class="indent">
+										<label>Maximum sample size and variables for histograms:</label>
+										<input type = "text" id = "output_size_hist"  name = "output_size_hist" value = "10" />
+										<div class="row">
+											<div class="col-12">
+												<input type="radio" id="plot_hist_chirpmass" name="plot_hist" value = "0" >
+												<label for="plot_hist_chirpmass">Chirp mass</label>
+											</div>
+											<div class="col-12">
+												<input type="radio" id="plot_hist_mass1" name="plot_hist" value = "2">
+												<label for="plot_hist_mass1">Mass1</label>
+											</div>
+											<div class="col-12">
+												<input type="radio" id="plot_hist_mass2" name="plot_hist" value = "3">
+												<label for="plot_hist_mass2">Mass2</label>
+											</div>
+											<div class="col-12">
+												<input type="radio" id="plot_hist_mass1error" name="plot_hist" value = "100">
+												<label for="plot_hist_mass1error">Error Mass1</label>
+											</div>
+											<div class="col-12">
+												<input type="radio" id="plot_hist_mass2error" name="plot_hist" value = "101">
+												<label for="plot_hist_mass2error">Error Mass2</label>
+											</div>
+											<div class="col-12">
+												<input type="radio" id="plot_hist_redshift" name="plot_hist" value = "1">
+												<label for="plot_hist_redshift">Redshift</label>
+											</div>
+											<div class="col-12">
+												<input type="radio" id="plot_hist_distlum" name="plot_hist" value = "5">
+												<label for="plot_hist_distlum">Luminosity distance</label>
+											</div>
+											<div class="col-12">
+												<input type="radio" id="plot_hist_chi" name="plot_hist" value = "4">
+												<label for="plot_hist_chi">&Chi; [spin]</label>
+											</div>
+											<div class="col-12">
+												<input type="radio" id="plot_hist_chierror" name="plot_hist" value = "102">
+												<label for="plot_hist_chierror">Error &Chi; [spin]</label>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<input type = "radio" id = "output4" name = "output" value = "plot_vs"/>
+									<label for="output4">  Plot vs. </label>
+									<div id="tableplot" class="indent">
+										<label>Maximum sample size and variables selection (select 2):</label>
+										<input type = "text" id = "output_size_plot"  name = "output_size_plot" value = "10" />
+										<div class="row">
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_chirpmass" name="plot_vs_chirpmass" value = "0" >
+												<label for="plot_vs_chirpmass">Chirp mass</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_mass1" name="plot_vs_mass1" value = "2">
+												<label for="plot_vs_mass1">Mass1</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_mass2" name="plot_vs_mass2" value = "3">
+												<label for="plot_vs_mass2">Mass2</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_mass1error" name="plot_v6_mass1error" value = "100">
+												<label for="plot_vs_mass1error">Error Mass1</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_mass2error" name="plot_vs_mass2error" value = "101">
+												<label for="plot_vs_mass2error">Error Mass2</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_redshift" name="plot_vs_redshift" value = "1">
+												<label for="plot_vs_redshift">Redshift</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_distlum" name="plot_vs_distlum" value = "5">
+												<label for="plot_vs_distlum">Luminosity distance</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_chi" name="plot_vs_chi" value = "4">
+												<label for="plot_vs_chi">&Chi; [spin]</label>
+											</div>
+											<div class="col-12">
+												<input type="checkbox" id="plot_vs_chierror" name="plot_vs_chierror" value = "102">
+												<label for="plot_vs_chierror">Error &Chi; [spin]</label>
+											</div>
+										</div>
+									</div>
+								</div>
+                                                -->
+								<input name="recaptcha" id="recaptcha" type="hidden" >
+								<input type = "submit" value = "Observe" >
+								
+							</form>
+						</div>
+						<div class="col-6 col-12-small">
+							<h3>Result:</h3>
+							<!-- <label id="resultstatus">Status: waiting for input</label>-->
+							<code>
+								<div id="result"></div>
+								<div id="status">Press Submit to see result here...</div>
+							</code>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/collapse.js"></script>
+		<script src="assets/js/interactive-pta.js" ></script>
+		<script>
+			$(update_captcha_token());
+		</script>
+		
+  </body>
+</html>

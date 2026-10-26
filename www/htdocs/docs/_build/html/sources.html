@@ -1,0 +1,603 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Sources &#8212; GWToolbox 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Utils" href="utils.html" />
+    <link rel="prev" title="Detectors" href="detectors.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="sources">
+<h1>Sources<a class="headerlink" href="#sources" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="khz">
+<h2>kHz<a class="headerlink" href="#khz" title="Permalink to this headline">¶</a></h2>
+<p>From Earth we can detect following systems: stellar mass black hole mergers, binary neutron star mergers, stellar mass black hole - neutron star mergers. Each system is represented by its own class.</p>
+<span class="target" id="module-gwtoolbox.sources_kHz"></span><dl class="class">
+<dt id="gwtoolbox.sources_kHz.BHB">
+<em class="property">class </em><code class="descclassname">gwtoolbox.sources_kHz.</code><code class="descname">BHB</code><span class="sig-paren">(</span><em>cosmos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class to describe stellar mass black hole black hole mergers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cosmos</strong> – define cosmological model</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.MCMCsample">
+<code class="descname">MCMCsample</code><span class="sig-paren">(</span><em>n_sources</em>, <em>inits</em>, <em>ranges</em>, <em>T</em>, <em>rho_cri</em>, <em>ant_fun</em>, <em>noise_tab</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.MCMCsample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.MCMCsample" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Markov-chain-Monte-Carlo sampling according to the distribution ndet(M, eta, z).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of sources to detect</li>
+<li><strong>inits</strong> (<em>list of floats</em>) – initial values of z, m1, m2, chi</li>
+<li><strong>ranges</strong> (<em>list of list of floats</em>) – parameter ranges</li>
+<li><strong>rho_cri</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The detection SNR threshold</li>
+<li><strong>ant_fun</strong> (<em>function</em>) – antenna pattern</li>
+<li><strong>noise_tab</strong> (<em>array of dtype float</em>) – noise function for detector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">samples of parameters Mchirp,z,m1,m2,chi,D</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(list of arrays of dtype float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.cos_mer_rate">
+<code class="descname">cos_mer_rate</code><span class="sig-paren">(</span><em>z</em>, <em>m1</em>, <em>m2</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.cos_mer_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.cos_mer_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cosmic merger rate density of the stellar-mass BHB mergers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The red-shift of the GW source</li>
+<li><strong>m1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the BHB</li>
+<li><strong>m2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the BHB</li>
+<li><strong>chi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – spin</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The number of mergers per year per Gpc3</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.density_det">
+<code class="descname">density_det</code><span class="sig-paren">(</span><em>T</em>, <em>z</em>, <em>m1</em>, <em>m2</em>, <em>chi</em>, <em>rho_cri</em>, <em>ant_fun</em>, <em>noise_tab</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.density_det"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.density_det" title="Permalink to this definition">¶</a></dt>
+<dd><p>The parameter distribution of detected sources.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Observation time, in unit of minute</li>
+<li><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The redshift of the GW source</li>
+<li><strong>m1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the BHB</li>
+<li><strong>m2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the BHB</li>
+<li><strong>chi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – spin</li>
+<li><strong>rho_cri</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The detection SNR threshold</li>
+<li><strong>ant_fun</strong> (<em>function</em>) – antenna pattern</li>
+<li><strong>noise_tab</strong> (<em>array of dtype float</em>) – noise function for detector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Number density of detection</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.errors_FIM">
+<code class="descname">errors_FIM</code><span class="sig-paren">(</span><em>n_sources</em>, <em>samples</em>, <em>noise_tab</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.errors_FIM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.errors_FIM" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return errors of parameters from Fisher Information Matrix</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n_sources</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – number of sources to detect</li>
+<li><strong>samples</strong> (<em>list of arrays of dtype float</em>) – sampled parameters</li>
+<li><strong>noise_tab</strong> (<em>array of dtype float</em>) – noise function for detector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">errors of sampled parameters m1,m2,chi</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(list of arrays of dtype float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.freq_limit">
+<code class="descname">freq_limit</code><span class="sig-paren">(</span><em>m1</em>, <em>m2</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.freq_limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.freq_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>The frequency upper limit of the waveform.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>m1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The Red-shifted individual masses</li>
+<li><strong>m2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The Red-shifted individual masses</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The upper limit of the frequency</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.mod_norm">
+<code class="descname">mod_norm</code><span class="sig-paren">(</span><em>Mch</em>, <em>F</em>, <em>iota</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.mod_norm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.mod_norm" title="Permalink to this definition">¶</a></dt>
+<dd><p>The normalization constant of the modulus of the GW waveform from stellar-mass binary black holes (BHB) mergers in frequency domain.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>Mch</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted chirp mass of the BHB in solar masses</li>
+<li><strong>F</strong> (<em>array of dtype float</em>) – The Antenna Patterns of the observatory</li>
+<li><strong>iota</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The inclination of the BHB orbit</li>
+<li><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The redshift of the GW source</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The normalization of the GW strain</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.mod_shape">
+<code class="descname">mod_shape</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.mod_shape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.mod_shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>The frequency dependence of the modulus of the GW waveform of BHB mergers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>array of dtype float</em>) – Frequencies of GW</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The modulus of the waveform corresponds to each frequency in f</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a> or array of dtype float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.partial">
+<code class="descname">partial</code><span class="sig-paren">(</span><em>A</em>, <em>m1</em>, <em>m2</em>, <em>chi</em>, <em>t0</em>, <em>phi0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.partial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.partial" title="Permalink to this definition">¶</a></dt>
+<dd><p>The matrix of partial derivatives of waveform as function of f</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>A</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>array of dtype float</em>) – The modulus of h(f)</li>
+<li><strong>m1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the BHB</li>
+<li><strong>m2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the BHB</li>
+<li><strong>chi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – spin</li>
+<li><strong>t0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The time of coalescence</li>
+<li><strong>phi0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The phase of coalescence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">matrix of partial derivatives of (f,i,j), Pij(f)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(function)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.phase">
+<code class="descname">phase</code><span class="sig-paren">(</span><em>f</em>, <em>m1</em>, <em>m2</em>, <em>chi</em>, <em>t0</em>, <em>phi0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.phase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>The phase of the waveform of the stellar-mass BHB mergers in the frequency domain.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>array of dtype float</em>) – Frequencies of GW</li>
+<li><strong>m1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted mass of the prime BH</li>
+<li><strong>m2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted mass of the second BH</li>
+<li><strong>chi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – spin</li>
+<li><strong>t0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The time of coalescence</li>
+<li><strong>phi0</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The phase of coalescence</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The phase psi(f) of the waveform as in exp^{−ipsi(f)}</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(array of dtype float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.set_model_theta">
+<code class="descname">set_model_theta</code><span class="sig-paren">(</span><em>new_theta=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.set_model_theta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.set_model_theta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function to change theta from fiducial to user-defined in cosmic merger rate</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_theta</strong> (<em>Optional</em><em>[</em><em>list of floats</em><em>]</em>) – new parameter values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">theta with new values, if new_theta=None return theta to fiducial</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(list of floats)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.tel_fun">
+<code class="descname">tel_fun</code><span class="sig-paren">(</span><em>z</em>, <em>m1</em>, <em>m2</em>, <em>chi</em>, <em>rho_cri</em>, <em>ant_fun</em>, <em>noise_tab</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.tel_fun"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.tel_fun" title="Permalink to this definition">¶</a></dt>
+<dd><p>The telescope function of Laser Interferometers and kHz sources.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The redshift of the GW source</li>
+<li><strong>m1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the BHB</li>
+<li><strong>m2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the BHB</li>
+<li><strong>chi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – spin</li>
+<li><strong>rho_cri</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The detection SNR threshold</li>
+<li><strong>ant_fun</strong> (<em>function</em>) – antenna pattern</li>
+<li><strong>noise_tab</strong> (<em>array of dtype float</em>) – noise function for detector</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The probability of detection</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHB.tot_num">
+<code class="descname">tot_num</code><span class="sig-paren">(</span><em>T</em>, <em>rho_cri</em>, <em>ant_fun</em>, <em>noise_tab</em>, <em>ranges</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHB.tot_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHB.tot_num" title="Permalink to this definition">¶</a></dt>
+<dd><p>The total number of sources detected.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>T</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Observation time, in unit of minutes</li>
+<li><strong>rho_cri</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The detection SNR threshold</li>
+<li><strong>ant_fun</strong> (<em>function</em>) – antenna pattern</li>
+<li><strong>noise_tab</strong> (<em>array of dtype float</em>) – noise function for detector</li>
+<li><strong>ranges</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – parameter ranges</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The total number of sources detected</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gwtoolbox.sources_kHz.DNS">
+<em class="property">class </em><code class="descclassname">gwtoolbox.sources_kHz.</code><code class="descname">DNS</code><span class="sig-paren">(</span><em>cosmos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#DNS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.DNS" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class to describe double neutron stars mergers.
+It inherits all functions from BHB class except set_model_theta and cos_mer_rate.</p>
+<p>Attributes:
+cosmos: define cosmological model</p>
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.DNS.cos_mer_rate">
+<code class="descname">cos_mer_rate</code><span class="sig-paren">(</span><em>z</em>, <em>m1</em>, <em>m2</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#DNS.cos_mer_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.DNS.cos_mer_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cosmic merger rate density of the stellar-mass DNS mergers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The redshift of the GW source</li>
+<li><strong>m1</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the NS</li>
+<li><strong>m2</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted masses of the NS</li>
+<li><strong>chi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – spin</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The number of mergers per year per Gpc3</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.DNS.set_model_theta">
+<code class="descname">set_model_theta</code><span class="sig-paren">(</span><em>new_theta=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#DNS.set_model_theta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.DNS.set_model_theta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function to change theta from fiducial to user-defined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_theta</strong> (<em>Optional</em><em>[</em><em>list of floats</em><em>]</em>) – new parameter values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">theta with new values, if new_theta=None return theta to fiducial</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(list of floats)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gwtoolbox.sources_kHz.BHNS">
+<em class="property">class </em><code class="descclassname">gwtoolbox.sources_kHz.</code><code class="descname">BHNS</code><span class="sig-paren">(</span><em>cosmos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHNS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHNS" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class to describe stellar mass black hole neutron stars mergers.
+It inherits all functions from BHB class except set_model_theta and cos_mer_rate.</p>
+<p>Attributes:
+cosmos: define cosmological model</p>
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHNS.cos_mer_rate">
+<code class="descname">cos_mer_rate</code><span class="sig-paren">(</span><em>z</em>, <em>M</em>, <em>m</em>, <em>chi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHNS.cos_mer_rate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHNS.cos_mer_rate" title="Permalink to this definition">¶</a></dt>
+<dd><p>The cosmic merger rate density of the stellar-mass BHB mergers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>z</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The redshift of the GW source</li>
+<li><strong>M</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted mass of the BH</li>
+<li><strong>m</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Red-shifted mass of the NS</li>
+<li><strong>chi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – spin</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The number of mergers per year per Gpc3</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.sources_kHz.BHNS.set_model_theta">
+<code class="descname">set_model_theta</code><span class="sig-paren">(</span><em>new_theta=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_kHz.html#BHNS.set_model_theta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_kHz.BHNS.set_model_theta" title="Permalink to this definition">¶</a></dt>
+<dd><p>The function to change theta from fiducial to user-defined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>new_theta</strong> (<em>Optional</em><em>[</em><em>list of floats</em><em>]</em>) – new parameter values</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">theta with new values, if new_theta=None return theta to fiducial</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(list of floats)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="mhz">
+<h2>mHz<a class="headerlink" href="#mhz" title="Permalink to this headline">¶</a></h2>
+<p>From space we can observe: super massive black hole mergers, inspirals of binary stellar black hole mergers, inspirals of double neutron star mergers, inspirals of stellar black hole-neutron star mergers, and extreme mass ratio inspirals.</p>
+<span class="target" id="module-gwtoolbox.sources_mHz"></span><dl class="class">
+<dt id="gwtoolbox.sources_mHz.SMBHB">
+<em class="property">class </em><code class="descclassname">gwtoolbox.sources_mHz.</code><code class="descname">SMBHB</code><span class="sig-paren">(</span><em>cosmos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_mHz.html#SMBHB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_mHz.SMBHB" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class to describe super massive black hole black hole mergers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cosmos</strong> – define cosmological model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="gwtoolbox.sources_mHz.EMRI">
+<em class="property">class </em><code class="descclassname">gwtoolbox.sources_mHz.</code><code class="descname">EMRI</code><span class="sig-paren">(</span><em>cosmos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_mHz.html#EMRI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_mHz.EMRI" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class to describe extreme mass ratio inspirals.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cosmos</strong> – define cosmological model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="gwtoolbox.sources_mHz.Insp">
+<em class="property">class </em><code class="descclassname">gwtoolbox.sources_mHz.</code><code class="descname">Insp</code><span class="sig-paren">(</span><em>cosmos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/sources_mHz.html#Insp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.sources_mHz.Insp" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class to describe inspirals</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cosmos</strong> – define cosmological model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="nhz">
+<h2>nHz<a class="headerlink" href="#nhz" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">GWToolbox</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="detectors.html">Detectors</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sources</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#khz">kHz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#mhz">mHz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#nhz">nHz</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="detectors.html" title="previous chapter">Detectors</a></li>
+      <li>Next: <a href="utils.html" title="next chapter">Utils</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Radboud University.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/sources.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

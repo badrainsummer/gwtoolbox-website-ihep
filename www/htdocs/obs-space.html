@@ -1,0 +1,754 @@
+<!DOCTYPE HTML>
+<!--
+    Phantom by HTML5 UP
+    html5up.net | @ajlkn
+    Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+    <head>
+        <title>GW Toolbox</title>
+        <meta charset="utf-8" />
+        <link rel="shortcut icon" href="/assets/favicon.png"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="stylesheet" href="assets/css/plot.css" /> 
+        <link rel="stylesheet" href="assets/css/patches.css" />
+        <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+        <!-- <script src="https://www.google.com/recaptcha/api.js?render=6LchHMIUAAAAAGzHYwFRL6lW-9qqoMpiLMt52rz2"></script> -->
+    </head>
+    <body class="is-preload">
+        <!-- Wrapper -->
+        <div id="wrapper">
+
+            <!-- Header -->
+            <header id="header">
+                <div class="inner">
+
+                    <!-- Logo -->
+                                        <!--
+                    <span class="icon2 stylelogo fas fa-tools"></span>
+                    <a href="index.html" class="logo">
+                        <span class="title">GW Toolbox</span>
+                    </a>
+                                        -->
+                                        <a href="index.html" class="logo">
+                                         <div class="col-4"><img src="images/logogwtoolbox.jpg"  width="300"/></span></div>
+          <!--<span class="icon2 stylelogo fas fa-tools"></span>-->
+            <!--<span class="title">GW-Universe Toolbox</span>-->
+                                        </a>
+
+                    <!-- Nav -->
+                    <nav>
+                        <ul>
+                            <li><a href="#menu">Menu</a></li>
+                        </ul>
+                    </nav>
+
+                </div>
+            </header>
+
+            <!-- Menu -->
+            <nav id="menu">
+                <h2>Menu</h2>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+     <!--               
+                    <li><a href="quick-start.html">Quick start</a></li>
+     -->             
+                    <li><a href="GWtoolbox.html">GWtoolbox</a></li>  
+                    <li><a href="obs-earth.html">Earth</a></li>
+                    <li><a href="obs-multimessenger.html">GW/GRB joint detection</a></li>
+                    <li><a href="obs-space.html">Space</a></li>
+                    <li><a href="obs-pta.html">PTA</a></li>
+                    <li><a href="/gradio/">AI Assistant</a></li>
+                                        <li><a href="population_model.html">Population Models</a></li>
+                                        <li><a href="https://code.ihep.ac.cn/caoty/gwtoolbox.git">Python Package</a></li>
+          				<li><a href="documents.html">Documents</a></li>
+          				<li><a href="about.html">About</a></li>
+          				<li><a href="https://youtu.be/mdGZfIUXP_A">Demo on YouTube</a></li>
+          				<li><a href="https://www.bilibili.com/video/BV14Q4y197H7?share_source=copy_web">Demo on blibli</a></li>
+                </ul>
+            </nav>
+
+            <!-- Main -->
+            <div id="main">
+                <div class="inner">
+                    <h1>Space observatories</h1>
+                    <div class="row">
+                        <div class="col-6 col-12-small">
+                            <form action = "/cgi-bin/form-space.py" method = "post" onchange="updateform()" onsubmit="return submitform()" id="setup">
+                                <h3>Input:</h3>
+                                <!-- <th>Setup:</th><th>Detector:</th><th>Populations:</th>-->
+                                <label for="detector_name">Detector:</label>
+                                <select name="detector_name" id="detector_name">
+                                    <option value="0">LISA default (2.5Gm/2W/0.3m)</option>
+                                    <option value="-1"> customised LISA</option>
+                                </select>
+                                <div id="iflisalike" class="indent" style="display: none;">
+                                    <label for="det_arm">Arm length [m] (LISA default: 2.5e9 m):</label>
+                                    <input type = "text" id="det_arm" name = "det_arm" value="2.5e9" />
+                                    <label for="det_laser_power">Laser power [W] (LISA default: 2 W):</label>
+                                    <input type = "text" id="det_laser_power" name = "det_laser_power" value="2.0" />
+                                    <label for="det_dia">Telescope diameter [m] (LISA default: 0.3m):</label>
+                                    <input type = "text" id="det_dia" name = "det_dia" value="0.3" />
+                                    <label for="Sacc0">Accelaration noise [Hz^-1]</label>
+                                    <input type = "text" id="Sacc0" name = "Sacc0" value="3.9e-44"/>
+                                    <label for="Sops)">Laser Shot Noise factor [Hz^-1]</label>
+                                    <input type = "text" id="Sops" name = "Sops" value="5.3e-38"/>
+                                    <label for="Sopo0">Other Optical Metrology system noises [Hz^-1]</label>
+                                    <input type = "text" id="Sopo0" name = "Sopo0" value="2.81e-38"/>
+                                </div>
+                                
+                                
+                                <label>Event types:</label>
+                                <div>
+                                    <select name="sourcetype_mHz" id="sourcetype_mHz" onchange="toggleIndividualSource(this)">
+                                        <option value='1'> Massive Black Hole Binaries </option>
+                                        <option value='2'> Galactic White Dwarf Binaries</option>
+                                        <option value='3'> Extreme Mass Ratio Inspirals</option>
+                                    </select>
+                                    
+                                    <div id = "mbhbmodel" style = "display: none;">
+                                        <div class="indent">
+                                            <select name="mbhb_pop" id="mbhb_pop">
+                                                <option value='1' selected>popIII</option>
+                                                <option value='2'>Q3 delay</option>
+                                                <option value='3'>Q3 no-delay</option>
+                                                <option value='0'>individual source</option>
+                                            </select>
+                                            <div id="mbhb_individual" style="display: none;">
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="mbhb_M1">M1:</label>
+                                                        <input type="text" id="mbhb_M1" name="mbhb_M1" value="1000000">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="mbhb_M2">M2:</label>
+                                                        <input type="text" id="mbhb_M2" name="mbhb_M2" value="100000">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="mbhb_z">z (Valid only if D is not provided):</label>
+                                                        <input type="text" id="mbhb_z" name="mbhb_z">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="mbhb_d">D:</label>
+                                                        <input type="text" id="mbhb_d" name="mbhb_d" value="4.4">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="mbhb_s1">s1:</label>
+                                                        <input type="text" id="mbhb_s1" name="mbhb_s1" value="0.5">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="mbhb_s2">s2:</label>
+                                                        <input type="text" id="mbhb_s2" name="mbhb_s2" value="0.3">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="mbhb_ra">&beta;</label>
+                                                        <input type="text" id="mbhb_ra" name="mbhb_ra" value="2.0">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="mbhb_dec">&lambda;</label>
+                                                        <input type="text" id="mbhb_dec" name="mbhb_dec" value="0.5">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id = "gwdmodel" style = "display: none;">
+                                        <div class="indent">
+                                            <select name="gwd_pop" id="gwd_pop">
+                                                <option value='1' selected>Nelemans et al. (2001)</option>
+                                                <option value='2'> Varification Binaries </option>
+                                                <option value='0'>individual source</option>
+                                            </select>
+                                            <div id="gwd_individual" style="display: none;">
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="gwd_M1">M1:</label>
+                                                        <input type="text" id="gwd_M1" name="gwd_M1" value="0.6">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="gwd_M2">M2:</label>
+                                                        <input type="text" id="gwd_M2" name="gwd_M2" value="0.6">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="gwd_z">z (Valid only if D is not provided):</label>
+                                                        <input type="text" id="gwd_z" name="gwd_z">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="gwd_d">D:</label>
+                                                        <input type="text" id="gwd_d" name="gwd_d" value="0.1">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="gwd_f">f:</label>
+                                                        <input type="text" id="gwd_f" name="gwd_f" value="5e-3">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="gwd_fdot">fdot:</label>
+                                                        <input type="text" id="gwd_fdot" name="gwd_fdot" value="-1e-16">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="gwd_ra">&beta;:</label>
+                                                        <input type="text" id="gwd_ra" name="gwd_ra" value="3.0">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="gwd_dec">&lambda;:</label>
+                                                        <input type="text" id="gwd_dec" name="gwd_dec" value="0.0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div id = "emrimodel" style = "display: none;">
+                                        <div class="indent">
+                                            <select name="emri_pop" id="emri_pop">
+                                                <option value='1' selected>M1</option>
+                                                <option value='2' >M2</option>
+                                                <option value='3' >M3</option>
+                                                <option value='4' >M4</option>
+                                                <option value='5' >M5</option>
+                                                <option value='6' >M6</option>
+                                                <option value='8' >M8</option>
+                                                <option value='9' >M9</option>
+                                                <option value='10'>M10</option>
+                                                <option value='11'>M11</option>
+                                                <option value='0'>individual source</option>
+                                            </select>
+                                            <div id="emri_individual" style="display: none;">
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_mu">&mu;:</label>
+                                                        <input type="text" id="emri_mu" name="emri_mu" value="27">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_M">M:</label>
+                                                        <input type="text" id="emri_M" name="emri_M" value="1e6">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_s">s:</label>
+                                                        <input type="text" id="emri_s" name="emri_s" value="0.99">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_e">e:</label>
+                                                        <input type="text" id="emri_e" name="emri_e" value="0.047">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_iota">&iota;:</label>
+                                                        <input type="text" id="emri_iota" name="emri_iota" value="0.9">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_gamma">&gamma;:</label>
+                                                        <input type="text" id="emri_gamma" name="emri_gamma" value="3.6">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_phi">&phi;:</label>
+                                                        <input type="text" id="emri_phi" name="emri_phi" value="2.1">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_alpha">&alpha;</label>
+                                                        <input type="text" id="emri_alpha" name="emri_alpha" value="5.1">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_thetas">&theta;_s:</label>
+                                                        <input type="text" id="emri_thetas" name="emri_thetas" value="2.1">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_phis">&phi;_s:</label>
+                                                        <input type="text" id="emri_phis" name="emri_phis" value="3.4">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_thetak">&theta;_k:</label>
+                                                        <input type="text" id="emri_thetak" name="emri_thetak" value="0.41">
+                                                    </div>
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_phik">&phi;_k:</label>
+                                                        <input type="text" id="emri_phik" name="emri_phik" value="5.2">
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-6 col-12-small">
+                                                        <label for="emri_d">D:</label>
+                                                        <input type="text" id="emri_d" name="emri_d" value="13">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label for="obs_time" style="display: inline; width: 20%;">Time [days]:</label>
+                                <input type = "text" id="obs_time" name = "obs_time" value = "365" style="display: inline; width: 20%;"/>
+                                <label for="signal_to_noise" style="display: inline; width: 20%;">SNR-threshold:</label>
+                                <input type = "text" id="signal_to_noise" id="signal_to_noise" name = "signal_to_noise" value = "8" style="display: inline; width: 20%;"/>
+                                                                <div id=warning style="display:none;">
+                                                                    <label class="thintext" style="color:red">warning: for EMRI, SNR less than 15 will result incomplete catalogue</label>
+                                                                </div>
+                                                                <div id=warning_M11 style="display:none;">
+                                                                    <label class="thintext" style="color:red">warning: Maxium Observation duration for population M11 is 4 years.</label>
+                                                                </div>
+                                <label for="cosmo_model">Cosmology:</label>
+                                <select name = "cosmo_model" id = "cosmo_model" >
+                                    <option value = "WMAP5" > Flat &Lambda;CDM - WMAP5  </option>
+                                    <option value = "WMAP7" > Flat &Lambda;CDM - WMAP7  </option>
+                                    <option value = "WMAP9" > Flat &Lambda;CDM - WMAP9  </option>
+                                    <option value = "Planck13" > Flat &Lambda;CDM - Planck13  </option>
+                                    <option value = "Planck15" selected> Flat &Lambda;CDM - Planck15  </option>
+                                    <option value = "FlatLambdaCDM"> customised Flat &Lambda;CDM </option>
+                                </select>
+                                <div id = "selfCosmos" style="display: none;">
+                                    <label for="H0" style="display: inline; width: 20%;"> H0(km/s/Mpc): </label><input type="text" name="H0" id="H0" value="70" style="display: inline; width: 15%;"/>
+                                    <label for="omega" style="display: inline; width: 20%;"> &Omega;0: </label><input type="text" name="omega" id="omega" value="0.3" style="display: inline; width: 15%;"/>
+                                    <label for="Tcmb" style="display: inline; width: 20%;"> Tcmb (K): </label><input type="text" name="Tcmb" id="Tcmb" value="2.725" style="display: inline; width: 15%;"/>
+                                </div>                                
+                                
+                                <div id="desired_outputs">
+                                    <label>Desired outputs:</label>
+                                    <div>
+                                        <input type = "radio" id = "output2" name = "output" value = "table" checked/>
+                                        <label for="output2">Total Number+Catalogue without uncertainties</label>
+                                        <div id="tablepar" class="indent" style="display:none">
+                                            <label>Maximum sample size:</label>
+                                            <input type = "text" id = "output_size_table"  name = "output_size_table" value = "100" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <input type = "radio" id = "output3" name = "output" value = "table2"/>
+                                        <label for="output3">Total Num.+Cata. with uncert. (<i>takes LONGER time</i>)</label>
+                                        <div id="tablepar2" class="indent" style="display:none">
+                                            <label>Maximum sample size:</label>
+                                            <input type = "text" id = "output_size_table2"  name = "output_size_table2" value = "10" />
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <input name="recaptcha" id="recaptcha" type="hidden" >
+                                <input type = "submit" value = "Observe" >
+                                <label class='slimtext'>Takes a few minutes. Heavy task may cause timeout error. In this case, we recommend to run the python package locally.</label>
+                            </form>
+                            <div id="SMBHB_columns" style="display:none;">
+                            <h5>meaning of catalogue columns</h5>
+                            <ul>
+                                <li>M1/2: intrinsic mass of primary/secondary BH, solar masses;</li>
+                                <li>z: cosmological redshift;</li>
+                                <li>s1/2: spin of primary/secondary BH; </li>
+                                <li>D: luminosity distance, in Gpc;</li>
+                                <li>&beta; Ecliptic latitude in rad;</li>
+                                <li>&lambda; Ecliptical longitude in rad;</li>
+                                <li>SNR: signal to noise ratio;</li>
+                                <li>d...: uncertainties of corresponding parameters;</li>
+                                <li>d&Omega;: uncertainty on solid angle in deg2;</li>
+                            </ul>
+                            </div>
+                            <div id="GWD_columns" style="display:none;">
+                            <h5>meaning of catalogue columns</h5>
+                            <ul>
+                                <li>f: frequency of the GW in Hz;</li>
+                                <li>fdot: frequency derivative;</li>
+                                <li>Amp: GW amplitude; </li>
+                                <li>D: luminosity distance, in kpc;</li>
+                                <li>&beta; Ecliptic latitude in rad;</li>
+                                <li>&lambda; Ecliptical longitude in rad;</li>
+                                <li>M1/2: masses of white dwarfs, in solar masses;</li>
+                                <li>d...: uncertainties of corresponding parameters;</li>
+                                <li>d&Omega;: uncertainty on solid angle in deg2;</li>
+                            </ul>
+                            </div>
+                            <div id="EMRIs_columns" style="display:none;">
+                            <h5>meaning of catalogue columns</h5>
+                            <ul>
+                                <li>&mu;: redshfited mass of the stellar mass BH in solar masses;</li>
+                                <li>M: redshifted mass of the massive BH in solar masses;</li>
+                                <li>s: spin of the massive BH;</li>
+                                <li>e: the initial eccentricity;</li>
+                                <li>&iota; the initial inclination;</li>
+                                <li>&gamma;: the pericenter angle in AK Waveform;</li>
+                                <li>&psi;: the initial phase;</li>
+                                <li>&theta;_s: (rad) the sky position polar angle of source in an ecliptic-based co-ordinate system, equals to π/2 minus the ecliptic latitude; </li>
+                                <li>&phi;_s: the sky position azimuth angle of source in an ecliptic-basedcoordinate system, equals to the ecliptic longitude; </li>
+                                <li>&theta;_k: (rad) the polar angle of the massive BH spin;</li>
+                                <li>&phi;_k: (rad) the azimuth angle of the massive BH spin;</li>
+                                <li>&alpha; (rad) the azimuthal direction of the orbital angular momentum;</li>
+                                <li> D: luminosity distance in Gpc; </li>
+                                <li>d...: uncertainties of corresponding parameters;</li>
+                                <li>d&Omega;: uncertainty on solid angle in deg2;</li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div class="col-6 col-12-small">
+                            <!--<h3>Result:</h3>>
+                            <!-- <label id="resultstatus">Status: waiting for input</label>-->
+                            <!--<code>
+       -->                     
+                            <div id="result"></div>
+                            <div id="status">Waiting for your input ...</div>
+                            <!--</code>-->
+                            <h5>Sensitivity curve:</h5>
+                            <div id="sensitivity" class="plot"></div>
+                            <div id="downloadsenscurve" style="display:none;">
+                                <!--
+                                <form method="post" action="" onsubmit="savetable()" id="savetab">
+                                    <label> File Name </label><input type='text' id='filename'>
+                                    <input type="submit" id="savesubmit" value="Download Catalogue as json">
+                                </form>
+                                -->
+                                <label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename_senscurve' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+                                <style>
+                                    .thintext{
+                                    font-size: 12px;
+                                    }
+                                </style>
+                                <style>
+                                    .slimtext{
+                                    font-size: 14px;
+                                    }
+                                </style>
+                                <button onclick="savecurve()" class="download">download curve</button>
+                                <style>
+                                    .download {
+                                      background-color: #e7e7e7; /* Green */
+                                      border: none;
+                                      color: white;
+                                      padding: 1px 5px;
+                                      text-align: center;
+                                      text-decoration: none;
+                                      display: inline-block;
+                                      font-size: 8px;
+                                    }
+                                </style>
+                            </div>
+                            <h5 id="ne_header" style="display: block;">Number of events:</h5>
+                            <p id="ne_value" style="display: block;">Expected number of detection: <span id="total">___</span></p>
+                            <h5 id="snr_header" style="display: none;">Signal-to-noise ratio:</h5>
+                            <p id="snr_value" style="display: none;">Expected SNR: <span id="snr">___</span></p>
+                            <h5 id="plot_header" style="display: block;">Plot:</h5>
+                            <form id="plot_options" onchange="return plot_options_changed()" style="display: block; overflow: visible">
+                                <label for="xvar"style="display: inline; width: 20%;">X-axis:</label>
+                                <select name="xvar" id="xvar" style="display: inline; width: 20%;"></select>
+                                <label for="yvar" style="display: inline; width: 20%;">Y-axis:</label>
+                                <select name="yvar" id="yvar" style="display: inline; width: 20%;"></select>
+                                <label class="slimtext">(if x-axis=y-axis, return a histogram)</label>
+                                <div id="if_with_errors" style="display:none;">
+                                <br>
+                                <input type = "checkbox" name="x_error_option" id="x_error_option"/>
+                                <label for="x_error_option">X-error</label>
+                                <input type="checkbox" name="y_error_option" id="y_error_option"/>
+                                <label for="y_error_option">Y-error</label>
+                                </div>
+                                <br>
+                                <input type = "checkbox" name="xlog" id="xlog" />
+                                <label for="xlog">Logarithmic x-axis</label>
+                                <input type = "checkbox" name="ylog" id="ylog" />
+                                <label for="ylog">Logarithmic y-axis</label>
+                            </form>
+                            <div id="plot" class="plot" style="display: block;"></div>
+                            <h5 id="table_header" style="display: block;">Table:</h5>
+                            <div id="table" style="font-size:12px;overflow-y: scroll; overflow-x:scroll; height: 300px;width:700px; display: block;"> </div>
+                            <div id="downloadtab" style="display:none">
+                                <!--
+                                <form method="post" action="" onsubmit="savetable()" id="savetab">
+                                    <label> File Name </label><input type='text' id='filename'>
+                                    <input type="submit" id="savesubmit" value="Download Catalogue as json">
+                                </form>
+                                -->
+                                <br>
+                                <label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+                                <button onclick="savetable()" class="download">download</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+        <script src="assets/js/collapse.js"></script>
+        <!--
+        <script src="assets/js/validateform.js" ></script>
+        -->
+        <script src='assets/js/plotly-latest.min.js'></script>
+        <script src="assets/js/interactive_plot-lisa2.js" ></script>      
+        <script>
+            function toggleIndividualSource(select) {
+                const mbhbSelect = document.getElementById('mbhb_pop');
+                const gwdSelect = document.getElementById('gwd_pop');
+                const emriSelect = document.getElementById('emri_pop');
+                const mbhbIndividual = document.getElementById('mbhb_individual');
+                const gwdIndividual = document.getElementById('gwd_individual');
+                const emriIndividual = document.getElementById('emri_individual');
+                const desiredOutputs = document.getElementById('desired_outputs');
+                const snrHeader = document.getElementById('snr_header');
+                const snrValue = document.getElementById('snr_value');
+                const neHeader = document.getElementById('ne_header');
+                const neValue = document.getElementById('ne_value');
+                const plotHeader = document.getElementById('plot_header');
+                const plotOptions = document.getElementById('plot_options');
+                const plotDiv = document.getElementById('plot');
+                const tableHeader = document.getElementById('table_header');
+                const tableDiv = document.getElementById('table');
+                const downloadsenscurve = document.getElementById('downloadsenscurve');
+                const downloadtab = document.getElementById('downloadtab');
+
+                // 隐藏所有 individual source 输入框
+                mbhbIndividual.style.display = 'none';
+                gwdIndividual.style.display = 'none';
+                emriIndividual.style.display = 'none';
+                desiredOutputs.style.display = 'block';
+                
+                // 显示所有结果区域
+                snrHeader.style.display = 'none';
+                snrValue.style.display = 'none';
+                neHeader.style.display = 'block';
+                neValue.style.display = 'block';
+                plotHeader.style.display = 'block';
+                plotOptions.style.display = 'block';
+                plotDiv.style.display = 'block';
+                tableHeader.style.display = 'block';
+                tableDiv.style.display = 'block';
+                downloadsenscurve.style.display = 'none';
+                downloadtab.style.display = 'none';
+
+                switch (select.value) {
+                    case '1':
+                        mbhbSelect.parentNode.parentNode.style.display = 'block';
+                        gwdSelect.parentNode.parentNode.style.display = 'none';
+                        emriSelect.parentNode.parentNode.style.display = 'none';
+                        if (mbhbSelect.value === '0') {
+                            mbhbIndividual.style.display = 'block';
+                            desiredOutputs.style.display = 'none';
+                            
+                            // 隐藏不需要的结果区域
+                            plotHeader.style.display = 'none';
+                            plotOptions.style.display = 'none';
+                            plotDiv.style.display = 'none';
+                            tableHeader.style.display = 'none';
+                            tableDiv.style.display = 'none';
+                            downloadtab.style.display = 'none';
+                            downloadsenscurve.style.display = 'block';
+                        }
+                        break;
+                    case '2':
+                        mbhbSelect.parentNode.parentNode.style.display = 'none';
+                        gwdSelect.parentNode.parentNode.style.display = 'block';
+                        emriSelect.parentNode.parentNode.style.display = 'none';
+                        if (gwdSelect.value === '0') {
+                            gwdIndividual.style.display = 'block';
+                            desiredOutputs.style.display = 'none';
+                            
+                            // 隐藏不需要的结果区域
+                            plotHeader.style.display = 'none';
+                            plotOptions.style.display = 'none';
+                            plotDiv.style.display = 'none';
+                            tableHeader.style.display = 'none';
+                            tableDiv.style.display = 'none';
+                            downloadtab.style.display = 'none';
+                            downloadsenscurve.style.display = 'block';
+                        }
+                        break;
+                    case '3':
+                        mbhbSelect.parentNode.parentNode.style.display = 'none';
+                        gwdSelect.parentNode.parentNode.style.display = 'none';
+                        emriSelect.parentNode.parentNode.style.display = 'block';
+                        if (emriSelect.value === '0') {
+                            emriIndividual.style.display = 'block';
+                            desiredOutputs.style.display = 'none';
+                            
+                            // 隐藏不需要的结果区域
+                            plotHeader.style.display = 'none';
+                            plotOptions.style.display = 'none';
+                            plotDiv.style.display = 'none';
+                            tableHeader.style.display = 'none';
+                            tableDiv.style.display = 'none';
+                            downloadtab.style.display = 'none';
+                            downloadsenscurve.style.display = 'block';
+                        }
+                        break;
+                }
+            }
+
+            // 监听子选项的变化
+            document.getElementById('mbhb_pop').addEventListener('change', function() {
+                const desiredOutputs = document.getElementById('desired_outputs');
+                const mbhbIndividual = document.getElementById('mbhb_individual');
+                const plotHeader = document.getElementById('plot_header');
+                const plotOptions = document.getElementById('plot_options');
+                const plotDiv = document.getElementById('plot');
+                const tableHeader = document.getElementById('table_header');
+                const tableDiv = document.getElementById('table');
+                const downloadsenscurve = document.getElementById('downloadsenscurve');
+                const downloadtab = document.getElementById('downloadtab');
+                const snrHeader = document.getElementById('snr_header');
+                const snrValue = document.getElementById('snr_value');
+                const neHeader = document.getElementById('ne_header');
+                const neValue = document.getElementById('ne_value');
+                
+                if (this.value === '0') {
+                    mbhbIndividual.style.display = 'block';
+                    desiredOutputs.style.display = 'none';
+                    
+                    // 隐藏不需要的结果区域
+                    plotHeader.style.display = 'none';
+                    plotOptions.style.display = 'none';
+                    plotDiv.style.display = 'none';
+                    tableHeader.style.display = 'none';
+                    tableDiv.style.display = 'none';
+                    downloadtab.style.display = 'none';
+                    downloadsenscurve.style.display = 'block';
+                    snrHeader.style.display = 'block';
+                    snrValue.style.display = 'block';
+                    neHeader.style.display = 'none';
+                    neValue.style.display = 'none';
+                } else {
+                    mbhbIndividual.style.display = 'none';
+                    desiredOutputs.style.display = 'block';
+                    
+                    // 显示所有结果区域
+                    plotHeader.style.display = 'block';
+                    plotOptions.style.display = 'block';
+                    plotDiv.style.display = 'block';
+                    tableHeader.style.display = 'block';
+                    tableDiv.style.display = 'block';
+                    downloadsenscurve.style.display = 'none';
+                    downloadtab.style.display = 'none';
+                    snrHeader.style.display = 'none';
+                    snrValue.style.display = 'none';
+                    neHeader.style.display = 'block';
+                    neValue.style.display = 'block';
+                }
+            });
+
+            document.getElementById('gwd_pop').addEventListener('change', function() {
+                const desiredOutputs = document.getElementById('desired_outputs');
+                const gwdIndividual = document.getElementById('gwd_individual');
+                const plotHeader = document.getElementById('plot_header');
+                const plotOptions = document.getElementById('plot_options');
+                const plotDiv = document.getElementById('plot');
+                const tableHeader = document.getElementById('table_header');
+                const tableDiv = document.getElementById('table');
+                const downloadsenscurve = document.getElementById('downloadsenscurve');
+                const downloadtab = document.getElementById('downloadtab');
+                const snrHeader = document.getElementById('snr_header');
+                const snrValue = document.getElementById('snr_value');
+                const neHeader = document.getElementById('ne_header');
+                const neValue = document.getElementById('ne_value');
+                
+                if (this.value === '0') {
+                    gwdIndividual.style.display = 'block';
+                    desiredOutputs.style.display = 'none';
+                    
+                    // 隐藏不需要的结果区域
+                    plotHeader.style.display = 'none';
+                    plotOptions.style.display = 'none';
+                    plotDiv.style.display = 'none';
+                    tableHeader.style.display = 'none';
+                    tableDiv.style.display = 'none';
+                    downloadtab.style.display = 'none';
+                    downloadsenscurve.style.display = 'block';
+                    snrHeader.style.display = 'block';
+                    snrValue.style.display = 'block';
+                    neHeader.style.display = 'none';
+                    neValue.style.display = 'none';
+                } else {
+                    gwdIndividual.style.display = 'none';
+                    desiredOutputs.style.display = 'block';
+                    
+                    // 显示所有结果区域
+                    plotHeader.style.display = 'block';
+                    plotOptions.style.display = 'block';
+                    plotDiv.style.display = 'block';
+                    tableHeader.style.display = 'block';
+                    tableDiv.style.display = 'block';
+                    downloadsenscurve.style.display = 'none';
+                    downloadtab.style.display = 'none';
+                    snrHeader.style.display = 'none';
+                    snrValue.style.display = 'none';
+                    neHeader.style.display = 'block';
+                    neValue.style.display = 'block';
+                }
+            });
+
+            document.getElementById('emri_pop').addEventListener('change', function() {
+                const desiredOutputs = document.getElementById('desired_outputs');
+                const emriIndividual = document.getElementById('emri_individual');
+                const plotHeader = document.getElementById('plot_header');
+                const plotOptions = document.getElementById('plot_options');
+                const plotDiv = document.getElementById('plot');
+                const tableHeader = document.getElementById('table_header');
+                const tableDiv = document.getElementById('table');
+                const downloadsenscurve = document.getElementById('downloadsenscurve');
+                const downloadtab = document.getElementById('downloadtab');
+                const snrHeader = document.getElementById('snr_header');
+                const snrValue = document.getElementById('snr_value');
+                const neHeader = document.getElementById('ne_header');
+                const neValue = document.getElementById('ne_value');
+                
+                if (this.value === '0') {
+                    emriIndividual.style.display = 'block';
+                    desiredOutputs.style.display = 'none';
+                    
+                    // 隐藏不需要的结果区域
+                    plotHeader.style.display = 'none';
+                    plotOptions.style.display = 'none';
+                    plotDiv.style.display = 'none';
+                    tableHeader.style.display = 'none';
+                    tableDiv.style.display = 'none';
+                    downloadtab.style.display = 'none';
+                    downloadsenscurve.style.display = 'block';
+                    snrHeader.style.display = 'block';
+                    snrValue.style.display = 'block';
+                    neHeader.style.display = 'none';
+                    neValue.style.display = 'none';
+                } else {
+                    emriIndividual.style.display = 'none';
+                    desiredOutputs.style.display = 'block';
+                    
+                    // 显示所有结果区域
+                    plotHeader.style.display = 'block';
+                    plotOptions.style.display = 'block';
+                    plotDiv.style.display = 'block';
+                    tableHeader.style.display = 'block';
+                    tableDiv.style.display = 'block';
+                    downloadsenscurve.style.display = 'none';
+                    downloadtab.style.display = 'none';
+                    snrHeader.style.display = 'none';
+                    snrValue.style.display = 'none';
+                    neHeader.style.display = 'block';
+                    neValue.style.display = 'block';
+                }
+            });
+        </script>
+        <!--<script>
+            $(update_captcha_token());
+        </script>
+        -->
+        
+  </body>
+</html>

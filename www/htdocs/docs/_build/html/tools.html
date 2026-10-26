@@ -1,0 +1,385 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Tools &#8212; GWToolbox 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Detectors" href="detectors.html" />
+    <link rel="prev" title="Examples" href="examples.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tools">
+<h1>Tools<a class="headerlink" href="#tools" title="Permalink to this headline">¶</a></h1>
+<p>Standard usage of gwtoolbox involves instantiating Tools from Earth or space</p>
+<div class="section" id="module-gwtoolbox.tools_earth">
+<span id="earth"></span><h2>Earth<a class="headerlink" href="#module-gwtoolbox.tools_earth" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gwtoolbox.tools_earth.Tools">
+<em class="property">class </em><code class="descclassname">gwtoolbox.tools_earth.</code><code class="descname">Tools</code><span class="sig-paren">(</span><em>detID</em>, <em>popID</em>, <em>cosmos</em>, <em>det_setup=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/tools_earth.html#Tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.tools_earth.Tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class with tools to manipulate GW detectors and sources on Earth.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>detID</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – detector id</li>
+<li><strong>popID</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – population id</li>
+<li><strong>cosmos</strong> (<em>class</em>) – cosmological model</li>
+<li><strong>det_setup</strong> (<em>Optional</em><em>[</em><em>list of floats</em><em>]</em>) – parameters to modify the detector noise</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gwtoolbox.tools_earth.Tools.detector">
+<code class="descname">detector</code><a class="headerlink" href="#gwtoolbox.tools_earth.Tools.detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>detector setup class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gwtoolbox.tools_earth.Tools.ant_pat">
+<code class="descname">ant_pat</code><a class="headerlink" href="#gwtoolbox.tools_earth.Tools.ant_pat" title="Permalink to this definition">¶</a></dt>
+<dd><p>detector shape</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">array of dtype float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gwtoolbox.tools_earth.Tools.noise">
+<code class="descname">noise</code><a class="headerlink" href="#gwtoolbox.tools_earth.Tools.noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>detector noise</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">array of dtype float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.tools_earth.Tools.list_param_errors">
+<code class="descname">list_param_errors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/tools_earth.html#Tools.list_param_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.tools_earth.Tools.list_param_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of final parameter errors.
+It can be used only after list_params is used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">errors m1,m2,chi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(list of arrays of dtype float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.tools_earth.Tools.list_params">
+<code class="descname">list_params</code><span class="sig-paren">(</span><em>time_obs=10000.0</em>, <em>rho_cri=8.0</em>, <em>size=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/tools_earth.html#Tools.list_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.tools_earth.Tools.list_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of final parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>time_obs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Observation time, in unit of minute</li>
+<li><strong>rho_cri</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The SNR threshold of detection</li>
+<li><strong>size</strong> (<em>Optional</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>]</em>) – sample size</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">samples</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(list of arrays of dtype float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.tools_earth.Tools.total_number">
+<code class="descname">total_number</code><span class="sig-paren">(</span><em>time_obs=10000.0</em>, <em>rho_cri=8.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/tools_earth.html#Tools.total_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.tools_earth.Tools.total_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the expected number of detections.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>time_obs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Observation time, in unit of minute</li>
+<li><strong>rho_cri</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The SNR threshold of detection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">expected number of detections</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-gwtoolbox.tools_space">
+<span id="space"></span><h2>Space<a class="headerlink" href="#module-gwtoolbox.tools_space" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gwtoolbox.tools_space.Tools">
+<em class="property">class </em><code class="descclassname">gwtoolbox.tools_space.</code><code class="descname">Tools</code><span class="sig-paren">(</span><em>detID</em>, <em>popID</em>, <em>cosmos</em>, <em>det_setup=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/tools_space.html#Tools"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.tools_space.Tools" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a class with tools to manipulate GW detectors and sources in space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>detID</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – detector id</li>
+<li><strong>popID</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – population id</li>
+<li><strong>cosmos</strong> (<em>class</em>) – cosmological model</li>
+<li><strong>det_setup</strong> (<em>Optional</em><em>[</em><em>list of floats</em><em>]</em>) – parameters to modify the detector noise</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="gwtoolbox.tools_space.Tools.detector">
+<code class="descname">detector</code><a class="headerlink" href="#gwtoolbox.tools_space.Tools.detector" title="Permalink to this definition">¶</a></dt>
+<dd><p>detector setup class</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">class</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gwtoolbox.tools_space.Tools.ant_pat">
+<code class="descname">ant_pat</code><a class="headerlink" href="#gwtoolbox.tools_space.Tools.ant_pat" title="Permalink to this definition">¶</a></dt>
+<dd><p>detector shape</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">array of dtype float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="gwtoolbox.tools_space.Tools.noise">
+<code class="descname">noise</code><a class="headerlink" href="#gwtoolbox.tools_space.Tools.noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>detector noise</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">array of dtype float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.tools_space.Tools.list_param_errors">
+<code class="descname">list_param_errors</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/tools_space.html#Tools.list_param_errors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.tools_space.Tools.list_param_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return array of final parameter errors.
+It can be used only when list_params was used before.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">errors m1,m2,chi</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(array of dtype float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.tools_space.Tools.list_params">
+<code class="descname">list_params</code><span class="sig-paren">(</span><em>time_obs=10000.0</em>, <em>rho_cri=8.0</em>, <em>list_all=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/tools_space.html#Tools.list_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.tools_space.Tools.list_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an array of final parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>time_obs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Observation time, in unit of minute</li>
+<li><strong>rho_cri</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The SNR threshold of detection</li>
+<li><strong>list_all</strong> (<em>Optional</em><em>[</em><em>boolean</em><em>]</em>) – to decide how large sample</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">samples</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(array of dtype float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.tools_space.Tools.total_number">
+<code class="descname">total_number</code><span class="sig-paren">(</span><em>time_obs=10000.0</em>, <em>rho_cri=8.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/tools_space.html#Tools.total_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.tools_space.Tools.total_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the expected number of detections.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>time_obs</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Observation time, in unit of minute</li>
+<li><strong>rho_cri</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The SNR threshold of detection</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">expected number of detections</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">GWToolbox</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-gwtoolbox.tools_earth">Earth</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gwtoolbox.tools_space">Space</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="detectors.html">Detectors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="examples.html" title="previous chapter">Examples</a></li>
+      <li>Next: <a href="detectors.html" title="next chapter">Detectors</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Radboud University.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/tools.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

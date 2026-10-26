@@ -1,0 +1,39 @@
+label {
+	margin: 1em 0 -0.5em 0;
+}
+
+input[type="text"], input[type="password"], input[type="email"], select {
+	height: 2em;
+}
+
+input[type="submit"] {
+	margin-top: 2em;
+}
+
+.indent {
+	padding-left: 4em;
+}
+
+code {
+	display: block;
+}
+
+.g-recaptchac {
+	margin: 1em 0;
+}
+
+
+#result img {
+	max-width: 100%;
+}
+
+.scrolling {
+	overflow-x:scroll;
+}
+table.dataframe {
+	table-layout: auto;
+	width: auto;
+}
+table.dataframe td, table.dataframe th {
+	padding: 0 0.75em;
+}

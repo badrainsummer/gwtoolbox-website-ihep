@@ -1,0 +1,678 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>gwtoolbox.sources_kHz &#8212; GWToolbox 0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for gwtoolbox.sources_kHz</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">truncnorm</span>
+<span class="kn">from</span> <span class="nn">astropy</span> <span class="k">import</span> <span class="n">units</span> <span class="k">as</span> <span class="n">u</span>
+
+<span class="kn">from</span> <span class="nn">.cosmology</span> <span class="k">import</span> <span class="n">Cosmology</span>
+<span class="kn">from</span> <span class="nn">.constants</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.parameters</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.functions_earth</span> <span class="k">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="BHB"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB">[docs]</a><span class="k">class</span> <span class="nc">BHB</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a class to describe stellar mass black hole black hole mergers.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters:</span>
+<span class="sd">      cosmos: define cosmological model</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cosmos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          cosmos (class): define cosmological model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span> <span class="o">=</span> <span class="n">cosmos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">thetaBHB</span>
+
+<div class="viewcode-block" id="BHB.set_model_theta"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.set_model_theta">[docs]</a>    <span class="k">def</span> <span class="nf">set_model_theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_theta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The function to change theta from fiducial to user-defined in cosmic merger rate</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          new_theta (Optional[list of floats]): new parameter values</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (list of floats): theta with new values, if new_theta=None return theta to fiducial</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_theta</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">new_theta</span>
+        <span class="k">else</span><span class="p">:</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">thetaBHB</span></div>
+
+<div class="viewcode-block" id="BHB.mod_norm"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.mod_norm">[docs]</a>    <span class="k">def</span> <span class="nf">mod_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mch</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">iota</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The normalization constant of the modulus of the GW waveform from stellar-mass binary black holes (BHB) mergers in frequency domain.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          Mch (float):  Red-shifted chirp mass of the BHB in solar masses</span>
+<span class="sd">          F (array of dtype float): The Antenna Patterns of the observatory</span>
+<span class="sd">          iota (float): The inclination of the BHB orbit</span>
+<span class="sd">          z (float): The redshift of the GW source</span>
+<span class="sd">          </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float): The normalization of the GW strain</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">C</span> <span class="o">=</span> <span class="n">CONST_AMPLITUDE_GW</span><span class="o">*</span><span class="n">Mch</span><span class="o">**</span><span class="p">(</span><span class="mf">5.</span><span class="o">/</span><span class="mf">6.</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">to_value</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">Gpc</span><span class="p">)</span>
+        <span class="n">scaling_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(((</span><span class="mf">1.</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">iota</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">iota</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">F</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">C</span><span class="o">*</span><span class="n">scaling_factor</span></div>
+
+<div class="viewcode-block" id="BHB.mod_shape"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.mod_shape">[docs]</a>    <span class="k">def</span> <span class="nf">mod_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The frequency dependence of the modulus of the GW waveform of BHB mergers.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          f (float or array of dtype float): Frequencies of GW</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float or array of dtype float): The modulus of the waveform corresponds to each frequency in f</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">f</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mf">7.</span><span class="o">/</span><span class="mf">6.</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BHB.freq_limit"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.freq_limit">[docs]</a>    <span class="k">def</span> <span class="nf">freq_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The frequency upper limit of the waveform.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          m1 (float): The Red-shifted individual masses</span>
+<span class="sd">          m2 (float): The Red-shifted individual masses</span>
+<span class="sd">          </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float): The upper limit of the frequency</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">m1</span><span class="o">+</span><span class="n">m2</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">sym_ratio</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+        <span class="n">y</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.6437</span>
+        <span class="n">y</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">0.827</span>
+        <span class="n">y</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.2706</span>
+        <span class="n">y</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.05822</span>
+        <span class="n">y</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.935</span>
+        <span class="n">y</span><span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">7.092</span>
+
+        <span class="n">sum_freq</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">-</span><span class="mf">4.455</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">chi</span><span class="p">)</span><span class="o">**</span><span class="mf">0.217</span><span class="o">+</span><span class="mf">3.521</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">chi</span><span class="p">)</span><span class="o">**</span><span class="mf">0.26</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+            <span class="n">N</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>  <span class="c1">### N -&gt; N+1</span>
+                <span class="n">sum_freq</span> <span class="o">+=</span> <span class="n">y</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span><span class="o">*</span><span class="n">eta</span><span class="o">**</span><span class="n">i</span><span class="o">*</span><span class="n">chi</span><span class="o">**</span><span class="n">j</span>
+        <span class="k">return</span> <span class="n">c</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="p">(</span><span class="n">GM_sun</span><span class="o">*</span><span class="n">M</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">*</span><span class="n">sum_freq</span> <span class="c1"># unit [Hz]</span></div>
+
+<div class="viewcode-block" id="BHB.phase"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.phase">[docs]</a>    <span class="k">def</span> <span class="nf">phase</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The phase of the waveform of the stellar-mass BHB mergers in the frequency domain.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          f (float or array of dtype float): Frequencies of GW</span>
+<span class="sd">          m1 (float): Red-shifted mass of the prime BH</span>
+<span class="sd">          m2 (float): Red-shifted mass of the second BH</span>
+<span class="sd">          chi (float): spin</span>
+<span class="sd">          t0 (float): The time of coalescence</span>
+<span class="sd">          phi0 (float): The phase of coalescence</span>
+<span class="sd">          </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (array of dtype float): The phase psi(f) of the waveform as in exp^{−ipsi(f)}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">m1</span><span class="o">+</span><span class="n">m2</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">sym_ratio</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">)</span>
+
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">920.9</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">492.1</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">135.0</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">6742.</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1053.</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.34e4</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.702e4</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">9566.</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">2182.</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.214e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">2.075e4</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">2.386e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.254e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">7.507e4</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.338e4</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">8.735e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.657e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.694e6</span>
+        <span class="c1">#    x[(1,0,5)]=-920.9;x[(1,1,5)]=492.1;x[(1,2,5)]=135.0;x[(2,0,5)]=6742.;x[(2,1,5)]=-1053.;x[(3,0,5)]=-1.34e4</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">8.898e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">6.31e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">5.068e4</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">5.981e6</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.415e6</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.128e7</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">8.696e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">6.71e5</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.008e4</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">)]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">5.838e6</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.514e6</span>
+        <span class="n">x</span><span class="p">[(</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">)]</span> <span class="o">=</span> <span class="mf">1.089e7</span>
+
+        <span class="n">Psi</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">chi</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">3715.</span><span class="o">/</span><span class="mf">756.</span><span class="p">,</span><span class="o">-</span><span class="mf">16.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">+</span><span class="mf">113.</span><span class="o">*</span><span class="n">chi</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="mf">3.</span><span class="p">),</span><span class="mf">15293365.0</span><span class="o">/</span><span class="mf">508032.0</span><span class="o">-</span><span class="mf">405.</span><span class="o">*</span><span class="n">chi</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mf">8.0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">M</span><span class="o">*</span><span class="n">f</span><span class="o">*</span><span class="n">GM_sun</span><span class="o">/</span><span class="n">c</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mf">1.</span><span class="o">/</span><span class="mf">3.</span><span class="p">)</span> <span class="c1"># dimensional less, total mass</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="p">):</span>
+            <span class="n">sum_psi</span> <span class="o">=</span> <span class="n">Psi</span><span class="p">(</span><span class="n">chi</span><span class="p">)[</span><span class="n">k</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">):</span>
+                <span class="n">N</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">3</span><span class="o">-</span><span class="n">i</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>  <span class="c1">### N -&gt; N+1</span>
+                    <span class="n">sum_psi</span> <span class="o">+=</span> <span class="n">x</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)]</span><span class="o">*</span><span class="n">eta</span><span class="o">**</span><span class="n">i</span><span class="o">*</span><span class="n">chi</span><span class="o">**</span><span class="n">j</span>
+            <span class="n">result</span> <span class="o">+=</span> <span class="n">sum_psi</span><span class="o">*</span><span class="n">v</span><span class="o">**</span><span class="n">k</span>
+        <span class="k">return</span> <span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span><span class="o">*</span><span class="n">t0</span><span class="o">+</span><span class="n">phi0</span><span class="o">+</span><span class="mf">3.</span><span class="o">/</span><span class="mf">128.</span><span class="o">/</span><span class="n">eta</span><span class="o">/</span><span class="n">v</span><span class="o">**</span><span class="mi">5</span><span class="o">*</span><span class="n">result</span></div>
+
+<div class="viewcode-block" id="BHB.partial"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.partial">[docs]</a>    <span class="k">def</span> <span class="nf">partial</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The matrix of partial derivatives of waveform as function of f</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          A (float or array of dtype float): The modulus of h(f)</span>
+<span class="sd">          m1 (float): Red-shifted masses of the BHB</span>
+<span class="sd">          m2 (float): Red-shifted masses of the BHB</span>
+<span class="sd">          chi (float): spin</span>
+<span class="sd">          t0 (float): The time of coalescence</span>
+<span class="sd">          phi0 (float): The phase of coalescence</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (function): matrix of partial derivatives of (f,i,j), Pij(f)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="mf">1e-5</span>
+
+        <span class="n">phase_final</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">)</span>
+        <span class="c1"># part_A=lambda f: 1/A;</span>
+        <span class="c1"># the error is determined with match-filtering of the waveform shape. therefore no derivative to the amplitude should be take.</span>
+        <span class="n">part_m1</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="o">+</span><span class="n">delta</span><span class="o">*</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="o">-</span><span class="n">delta</span><span class="o">*</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">delta</span><span class="o">*</span><span class="n">m1</span><span class="p">)</span>
+        <span class="n">part_m2</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="o">+</span><span class="n">delta</span><span class="o">*</span><span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="o">-</span><span class="n">delta</span><span class="o">*</span><span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">delta</span><span class="o">*</span><span class="n">m2</span><span class="p">)</span>
+        <span class="n">part_chi</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="o">+</span><span class="n">delta</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">phase</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="o">-</span><span class="n">delta</span><span class="p">,</span> <span class="n">t0</span><span class="p">,</span> <span class="n">phi0</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">delta</span><span class="p">)</span>
+        <span class="n">part_t0</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">f</span>
+        <span class="n">part_phi</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">:</span><span class="mf">1.</span>
+
+        <span class="n">list_partial</span> <span class="o">=</span> <span class="p">[</span><span class="n">part_m1</span><span class="p">,</span> <span class="n">part_m2</span><span class="p">,</span> <span class="n">part_chi</span><span class="p">,</span> <span class="n">part_t0</span><span class="p">,</span> <span class="n">part_phi</span><span class="p">]</span>
+        <span class="c1">#PartMat = np.zeros((5,5))</span>
+        <span class="c1">#PartMat[(0,0)]=lambda f:1</span>
+        <span class="c1">#for i in range(1,5):</span>
+        <span class="c1">#    for j in range(i,5):</span>
+        <span class="c1">#        PartMat[(i,j)]=lambda f: list[i]*list[j]*A**2</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">f</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">:</span><span class="n">list_partial</span><span class="p">[</span><span class="n">i</span><span class="p">](</span><span class="n">f</span><span class="p">)</span><span class="o">*</span><span class="n">list_partial</span><span class="p">[</span><span class="n">j</span><span class="p">](</span><span class="n">f</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">mod_shape</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">A</span><span class="o">**</span><span class="mi">2</span></div>
+
+<div class="viewcode-block" id="BHB.cos_mer_rate"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.cos_mer_rate">[docs]</a>    <span class="k">def</span> <span class="nf">cos_mer_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The cosmic merger rate density of the stellar-mass BHB mergers.</span>
+<span class="sd">          </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          z (float): The red-shift of the GW source</span>
+<span class="sd">          m1 (float): Red-shifted masses of the BHB</span>
+<span class="sd">          m2 (float): Red-shifted masses of the BHB</span>
+<span class="sd">          chi (float): spin</span>
+<span class="sd">          </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float): The number of mergers per year per Gpc3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Mch</span> <span class="o">=</span> <span class="n">chirp_mass</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">)</span>
+        <span class="n">eta</span> <span class="o">=</span> <span class="n">sym_ratio</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">)</span>
+
+        <span class="n">a0</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="n">b0</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">c0</span><span class="p">,</span><span class="n">c1</span><span class="p">,</span><span class="n">d0</span><span class="p">,</span><span class="n">d1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">z</span><span class="o">&lt;=</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">z</span><span class="o">&gt;=</span><span class="n">Z_HIGH</span> <span class="ow">or</span> <span class="n">Mch</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">eta</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">eta</span><span class="o">&gt;</span><span class="mf">0.25</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="mf">1e-10</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="n">p_eta</span> <span class="o">=</span> <span class="mf">1.</span>
+            <span class="n">p_chi</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span><span class="o">.</span><span class="n">lookback_time</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="c1">#in unit of Gya</span>
+            <span class="n">log10N</span> <span class="o">=</span> <span class="p">(</span><span class="n">a0</span><span class="o">+</span><span class="n">a1</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">t</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="o">/</span><span class="n">t1</span><span class="p">)</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">log10N</span>
+            <span class="c1"># the normalization</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">b0</span><span class="o">+</span><span class="n">b1</span><span class="o">*</span><span class="n">t</span>
+            <span class="n">sigL</span> <span class="o">=</span> <span class="n">c0</span><span class="o">+</span><span class="n">c1</span><span class="o">*</span><span class="n">t</span>
+            <span class="n">sigR</span> <span class="o">=</span> <span class="n">d0</span><span class="o">+</span><span class="n">d1</span><span class="o">*</span><span class="n">t</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">sigL</span><span class="o">+</span><span class="n">sigR</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">Mch</span> <span class="o">&lt;=</span> <span class="n">mu</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">mu</span><span class="o">-</span><span class="n">Mch</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">sigL</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">Mch</span><span class="o">-</span><span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">sigR</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+            <span class="c1"># the distribution of chirpmass</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">eta</span><span class="o">-</span><span class="mi">2</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="n">eta</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">-</span><span class="mi">4</span><span class="p">))</span><span class="o">/</span><span class="mf">2.</span>
+            <span class="c1"># the mass ratio m1/m2 (&gt;1).</span>
+            <span class="n">sig_q</span> <span class="o">=</span> <span class="mf">0.2</span>
+            <span class="c1"># the width of distribution of q</span>
+            <span class="n">p_eta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">sig_q</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+            <span class="c1"># the distribution of eta</span>
+            <span class="n">sig_chi</span> <span class="o">=</span> <span class="mf">0.1</span>
+            <span class="c1"># the widht of distribution of chi</span>
+            <span class="n">p_chi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">chi</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mf">2.0</span><span class="o">*</span><span class="n">sig_chi</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+            <span class="c1"># the distribution of chi</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="o">*</span><span class="n">norm</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">p_eta</span><span class="o">*</span><span class="n">p_chi</span></div>
+            <span class="c1"># asymmetric (split) Gaussian function.</span>
+
+
+<div class="viewcode-block" id="BHB.tel_fun"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.tel_fun">[docs]</a>    <span class="k">def</span> <span class="nf">tel_fun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">rho_cri</span><span class="p">,</span> <span class="n">ant_fun</span><span class="p">,</span> <span class="n">noise_tab</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The telescope function of Laser Interferometers and kHz sources.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          z (float): The redshift of the GW source</span>
+<span class="sd">          m1 (float): Red-shifted masses of the BHB</span>
+<span class="sd">          m2 (float): Red-shifted masses of the BHB</span>
+<span class="sd">          chi (float): spin</span>
+<span class="sd">          rho_cri (float): The detection SNR threshold</span>
+<span class="sd">          ant_fun (function): antenna pattern</span>
+<span class="sd">          noise_tab (array of dtype float): noise function for detector</span>
+<span class="sd">          </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float): The probability of detection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># both masses should be intrinsic here.</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="n">f_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_limit</span><span class="p">(</span><span class="n">m1</span><span class="o">=</span><span class="n">m1</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">z</span><span class="p">),</span> <span class="n">m2</span><span class="o">=</span><span class="n">m2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">z</span><span class="p">),</span> <span class="n">chi</span><span class="o">=</span><span class="n">chi</span><span class="p">)</span>
+        <span class="c1"># the waveform want to eat red-shifted mass.</span>
+        <span class="n">rho_sq_core_value</span> <span class="o">=</span> <span class="n">rho_sq_core</span><span class="p">(</span><span class="n">noise_tab</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">mod_shape</span><span class="p">,</span> <span class="n">f_up</span><span class="o">=</span><span class="n">f_up</span><span class="p">)</span>
+
+        <span class="n">theta_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">))</span>
+        <span class="n">varphi_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        <span class="n">iota_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">))</span>
+        <span class="n">psi_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">2.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        <span class="c1"># an isotropic distribution of angles</span>
+
+        <span class="n">F</span> <span class="o">=</span> <span class="n">ant_fun</span><span class="p">(</span><span class="n">theta_array</span><span class="p">,</span> <span class="n">varphi_array</span><span class="p">,</span> <span class="n">psi_array</span><span class="p">)</span>
+        <span class="n">Mch</span> <span class="o">=</span> <span class="n">chirp_mass</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">)</span>
+        <span class="n">A_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mod_norm</span><span class="p">(</span><span class="n">Mch</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">z</span><span class="p">),</span> <span class="n">F</span><span class="p">,</span> <span class="n">iota_array</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+        <span class="n">rho_sq_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="mf">4.</span><span class="o">*</span><span class="n">A_array</span><span class="o">**</span><span class="mi">2</span><span class="o">*</span><span class="n">rho_sq_core_value</span><span class="p">)</span>
+        <span class="n">heav_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">heaviside</span><span class="p">(</span><span class="n">rho_sq_array</span><span class="o">-</span><span class="n">rho_cri</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">heav_array</span><span class="p">)</span></div>
+        <span class="c1">#return rho_sq_array</span>
+
+<div class="viewcode-block" id="BHB.density_det"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.density_det">[docs]</a>    <span class="k">def</span> <span class="nf">density_det</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span> <span class="n">rho_cri</span><span class="p">,</span> <span class="n">ant_fun</span><span class="p">,</span> <span class="n">noise_tab</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The parameter distribution of detected sources.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          T (float): Observation time, in unit of minute</span>
+<span class="sd">          z (float): The redshift of the GW source</span>
+<span class="sd">          m1 (float): Red-shifted masses of the BHB</span>
+<span class="sd">          m2 (float): Red-shifted masses of the BHB</span>
+<span class="sd">          chi (float): spin</span>
+<span class="sd">          rho_cri (float): The detection SNR threshold</span>
+<span class="sd">          ant_fun (function): antenna pattern</span>
+<span class="sd">          noise_tab (array of dtype float): noise function for detector</span>
+<span class="sd">          </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float): Number density of detection</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">T_year</span> <span class="o">=</span> <span class="p">(</span><span class="n">T</span><span class="o">*</span><span class="n">u</span><span class="o">.</span><span class="n">min</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="c1"># T in unit of minuts</span>
+        <span class="k">return</span> <span class="n">T_year</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cos_mer_rate</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">tel_fun</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">chi</span><span class="p">,</span> <span class="n">rho_cri</span><span class="p">,</span><span class="n">ant_fun</span><span class="p">,</span><span class="n">noise_tab</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span><span class="o">.</span><span class="n">differential_comoving_volume</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">to_value</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">Gpc</span><span class="o">**</span><span class="mi">3</span><span class="o">/</span><span class="n">u</span><span class="o">.</span><span class="n">sr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BHB.tot_num"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.tot_num">[docs]</a>    <span class="k">def</span> <span class="nf">tot_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">rho_cri</span><span class="p">,</span> <span class="n">ant_fun</span><span class="p">,</span> <span class="n">noise_tab</span><span class="p">,</span> <span class="n">ranges</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The total number of sources detected.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          T (float): Observation time, in unit of minutes</span>
+<span class="sd">          rho_cri (float): The detection SNR threshold</span>
+<span class="sd">          ant_fun (function): antenna pattern</span>
+<span class="sd">          noise_tab (array of dtype float): noise function for detector</span>
+<span class="sd">          ranges (list): parameter ranges</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float): The total number of sources detected</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">5000</span>
+        <span class="n">z_ranges</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">m1_ranges</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">m2_ranges</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">chi_ranges</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+        <span class="n">z_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">z_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">z_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        <span class="n">m1_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">m1_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">m1_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        <span class="n">m2_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">m2_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">m2_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+        <span class="n">chi_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="n">chi_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">high</span><span class="o">=</span><span class="n">chi_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="n">length</span><span class="p">)</span>
+
+        <span class="n">Ndet_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">density_det</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">,</span><span class="n">rho_cri</span><span class="p">,</span><span class="n">ant_fun</span><span class="p">,</span><span class="n">noise_tab</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">z_array</span><span class="p">,</span> <span class="n">m1_array</span><span class="p">,</span> <span class="n">m2_array</span><span class="p">,</span> <span class="n">chi_array</span><span class="p">)])</span>
+
+        <span class="n">z_scope</span> <span class="o">=</span> <span class="n">z_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">z_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">m1_scope</span> <span class="o">=</span> <span class="n">m1_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">m1_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">m2_scope</span> <span class="o">=</span> <span class="n">m2_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">m2_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">chi_scope</span> <span class="o">=</span> <span class="n">chi_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">chi_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">z_scope</span><span class="o">*</span><span class="n">m1_scope</span><span class="o">*</span><span class="n">m2_scope</span><span class="o">*</span><span class="n">chi_scope</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">Ndet_array</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BHB.MCMCsample"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.MCMCsample">[docs]</a>    <span class="k">def</span> <span class="nf">MCMCsample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_sources</span><span class="p">,</span> <span class="n">inits</span><span class="p">,</span> <span class="n">ranges</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">rho_cri</span><span class="p">,</span> <span class="n">ant_fun</span><span class="p">,</span> <span class="n">noise_tab</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The Markov-chain-Monte-Carlo sampling according to the distribution ndet(M, eta, z).</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          n_sources (int): number of sources to detect</span>
+<span class="sd">          inits (list of floats): initial values of z, m1, m2, chi</span>
+<span class="sd">          ranges (list of list of floats): parameter ranges</span>
+<span class="sd">          rho_cri (float): The detection SNR threshold</span>
+<span class="sd">          ant_fun (function): antenna pattern</span>
+<span class="sd">          noise_tab (array of dtype float): noise function for detector</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (list of arrays of dtype float): samples of parameters Mchirp,z,m1,m2,chi,D</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">burning_steps</span> <span class="o">=</span> <span class="mi">1000</span>
+        <span class="n">jump_steps</span> <span class="o">=</span> <span class="mi">10</span>
+
+        <span class="n">z0</span><span class="p">,</span><span class="n">m10</span><span class="p">,</span><span class="n">m20</span><span class="p">,</span><span class="n">chi0</span> <span class="o">=</span> <span class="n">inits</span>
+        <span class="n">step_z</span> <span class="o">=</span> <span class="mf">0.01</span>
+        <span class="n">step_m1</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">step_m2</span> <span class="o">=</span> <span class="mf">1.</span>
+        <span class="n">step_chi</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="n">z_ranges</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">m1_ranges</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">m2_ranges</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="n">chi_ranges</span> <span class="o">=</span> <span class="n">ranges</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="c1"># MCMC sampling according to distribution function(z,m1,m2)</span>
+        <span class="n">z</span><span class="p">,</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">chi</span> <span class="o">=</span> <span class="p">[</span><span class="n">z0</span><span class="p">,</span><span class="n">m10</span><span class="p">,</span><span class="n">m20</span><span class="p">,</span><span class="n">chi0</span><span class="p">]</span>
+        <span class="c1"># inital parameters</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">samples_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">z</span><span class="p">])</span>
+        <span class="n">samples_m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m1</span><span class="p">])</span>
+        <span class="n">samples_m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">m2</span><span class="p">])</span>
+        <span class="n">samples_chi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">chi</span><span class="p">])</span>
+
+        <span class="k">while</span> <span class="n">length</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">n_sources</span><span class="o">*</span><span class="n">jump_steps</span><span class="o">+</span><span class="n">burning_steps</span><span class="p">):</span>
+            <span class="n">z_next</span><span class="p">,</span><span class="n">m1_next</span><span class="p">,</span><span class="n">m2_next</span><span class="p">,</span><span class="n">chi_next</span> <span class="o">=</span> <span class="p">[</span><span class="n">z</span><span class="p">,</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">chi</span><span class="p">]</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">scale</span><span class="o">=</span><span class="p">[</span><span class="n">step_z</span><span class="p">,</span><span class="n">step_m1</span><span class="p">,</span><span class="n">step_m2</span><span class="p">,</span><span class="n">step_chi</span><span class="p">],</span><span class="n">size</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">z_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="n">z_next</span><span class="o">&lt;</span><span class="n">z_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">m1_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="n">m1_next</span><span class="o">&lt;</span><span class="n">m1_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">m2_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="n">m2_next</span><span class="o">&lt;</span><span class="n">m2_ranges</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">chi_ranges</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">&lt;</span><span class="n">chi_next</span><span class="o">&lt;</span><span class="n">chi_ranges</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">p0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">density_det</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">z</span><span class="p">,</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">chi</span><span class="p">,</span><span class="n">rho_cri</span><span class="p">,</span><span class="n">ant_fun</span><span class="p">,</span><span class="n">noise_tab</span><span class="p">)</span>
+
+                <span class="n">pac</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">density_det</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">z_next</span><span class="p">,</span><span class="n">m1_next</span><span class="p">,</span><span class="n">m2_next</span><span class="p">,</span><span class="n">chi_next</span><span class="p">,</span><span class="n">rho_cri</span><span class="p">,</span><span class="n">ant_fun</span><span class="p">,</span><span class="n">noise_tab</span><span class="p">)</span><span class="o">/</span><span class="n">p0</span><span class="p">)</span> <span class="c1"># accept probability</span>
+
+                <span class="k">if</span> <span class="n">pac</span><span class="o">==</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="n">low</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">pac</span><span class="p">:</span>
+                    <span class="n">z</span><span class="p">,</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="n">chi</span> <span class="o">=</span> <span class="p">[</span><span class="n">z_next</span><span class="p">,</span><span class="n">m1_next</span><span class="p">,</span><span class="n">m2_next</span><span class="p">,</span><span class="n">chi_next</span><span class="p">]</span>
+                    <span class="n">samples_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samples_z</span><span class="p">,[</span><span class="n">z</span><span class="p">])</span>
+                    <span class="n">samples_m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samples_m1</span><span class="p">,[</span><span class="nb">max</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">)])</span>
+                    <span class="n">samples_m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samples_m2</span><span class="p">,[</span><span class="nb">min</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">)])</span>
+                    <span class="n">samples_chi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">samples_chi</span><span class="p">,[</span><span class="n">chi</span><span class="p">])</span>
+                    <span class="n">length</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+        <span class="n">samples_D</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">samples_z</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="n">samples_Mc</span> <span class="o">=</span> <span class="n">chirp_mass</span><span class="p">(</span><span class="n">samples_m1</span><span class="p">,</span><span class="n">samples_m2</span><span class="p">)</span>
+        
+        <span class="k">return</span> <span class="p">[</span><span class="n">samples_Mc</span><span class="p">[</span><span class="n">burning_steps</span><span class="p">::</span><span class="n">jump_steps</span><span class="p">],</span><span class="n">samples_z</span><span class="p">[</span><span class="n">burning_steps</span><span class="p">::</span><span class="n">jump_steps</span><span class="p">],</span><span class="n">samples_m1</span><span class="p">[</span><span class="n">burning_steps</span><span class="p">::</span><span class="n">jump_steps</span><span class="p">],</span><span class="n">samples_m2</span><span class="p">[</span><span class="n">burning_steps</span><span class="p">::</span><span class="n">jump_steps</span><span class="p">],</span><span class="n">samples_chi</span><span class="p">[</span><span class="n">burning_steps</span><span class="p">::</span><span class="n">jump_steps</span><span class="p">],</span><span class="n">samples_D</span><span class="p">[</span><span class="n">burning_steps</span><span class="p">::</span><span class="n">jump_steps</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="BHB.errors_FIM"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHB.errors_FIM">[docs]</a>    <span class="k">def</span> <span class="nf">errors_FIM</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_sources</span><span class="p">,</span> <span class="n">samples</span><span class="p">,</span> <span class="n">noise_tab</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return errors of parameters from Fisher Information Matrix</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          n_sources (int): number of sources to detect</span>
+<span class="sd">          samples (list of arrays of dtype float): sampled parameters</span>
+<span class="sd">          noise_tab (array of dtype float): noise function for detector</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (list of arrays of dtype float): errors of sampled parameters m1,m2,chi</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">errors_m1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_sources</span><span class="p">)</span>
+        <span class="n">errors_m2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_sources</span><span class="p">)</span>
+        <span class="n">errors_chi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_sources</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">n_sources</span><span class="p">):</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">m1</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">m2</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">Mch</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">DL</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span><span class="o">.</span><span class="n">luminosity_distance</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">to_value</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">Gpc</span><span class="p">)</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">CONST_AMPLITUDE_GW</span><span class="o">*</span><span class="p">(</span><span class="n">Mch</span><span class="o">*</span><span class="p">(</span><span class="mf">1.</span><span class="o">+</span><span class="n">z</span><span class="p">))</span><span class="o">**</span><span class="p">(</span><span class="mf">5.</span><span class="o">/</span><span class="mf">6.</span><span class="p">)</span><span class="o">/</span><span class="n">DL</span>
+            <span class="n">chi</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            
+            <span class="n">part_mat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">A</span><span class="p">,(</span><span class="mf">1.</span><span class="o">+</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">m1</span><span class="p">,(</span><span class="mf">1.</span><span class="o">+</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">m2</span><span class="p">,</span><span class="n">chi</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">f_up</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq_limit</span><span class="p">((</span><span class="mf">1.</span><span class="o">+</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">m1</span><span class="p">,(</span><span class="mf">1.</span><span class="o">+</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="n">m2</span><span class="p">,</span><span class="n">chi</span><span class="p">)</span>
+            <span class="n">fim</span> <span class="o">=</span> <span class="n">fis_inf_matr</span><span class="p">(</span><span class="n">part_mat</span><span class="p">,</span><span class="n">noise_tab</span><span class="p">,</span><span class="n">f_up</span><span class="o">=</span><span class="n">f_up</span><span class="p">,</span><span class="n">numpar</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">err_mt</span> <span class="o">=</span> <span class="n">errors</span><span class="p">(</span><span class="n">fim</span><span class="p">)</span>
+            
+            <span class="c1">#ErrMt_m1m2=ErrMt[np.ix_([0,1],[0,1])]</span>
+            <span class="n">conv</span> <span class="o">=</span> <span class="n">FIM_conv_matr</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span><span class="n">m2</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">err_mt_tilde</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">conv</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span><span class="n">err_mt</span><span class="p">),</span><span class="n">conv</span><span class="p">)</span>
+            <span class="n">errors_m1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">err_mt</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">errors_m2</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">err_mt</span><span class="p">))[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">errors_chi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">err_mt</span><span class="p">))[</span><span class="mi">2</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">errors_m1</span><span class="p">,</span><span class="n">errors_m2</span><span class="p">,</span><span class="n">errors_chi</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="DNS"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.DNS">[docs]</a><span class="k">class</span> <span class="nc">DNS</span><span class="p">(</span><span class="n">BHB</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a class to describe double neutron stars mergers.</span>
+<span class="sd">    It inherits all functions from BHB class except set_model_theta and cos_mer_rate.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">    cosmos: define cosmological model</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">cosmos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          cosmos (class): define cosmological model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span> <span class="o">=</span> <span class="n">cosmos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">thetaDNS</span>
+
+<div class="viewcode-block" id="DNS.set_model_theta"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.DNS.set_model_theta">[docs]</a>    <span class="k">def</span> <span class="nf">set_model_theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_theta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The function to change theta from fiducial to user-defined.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          new_theta (Optional[list of floats]): new parameter values</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (list of floats): theta with new values, if new_theta=None return theta to fiducial</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_theta</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">new_theta</span>
+        <span class="k">else</span><span class="p">:</span>
+           <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">thetaDNS</span></div>
+
+<div class="viewcode-block" id="DNS.cos_mer_rate"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.DNS.cos_mer_rate">[docs]</a>    <span class="k">def</span> <span class="nf">cos_mer_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span> <span class="n">chi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The cosmic merger rate density of the stellar-mass DNS mergers.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          z (float): The redshift of the GW source</span>
+<span class="sd">          m1 (float): Red-shifted masses of the NS</span>
+<span class="sd">          m2 (float): Red-shifted masses of the NS</span>
+<span class="sd">          chi (float): spin</span>
+<span class="sd">          </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float): The number of mergers per year per Gpc3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a0</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="n">loc</span><span class="p">,</span><span class="n">scal</span><span class="p">,</span><span class="n">low</span><span class="p">,</span><span class="n">high</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">z</span><span class="o">&lt;=</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">z</span><span class="o">&gt;=</span><span class="n">Z_HIGH</span><span class="p">):</span> <span class="n">rate</span> <span class="o">=</span> <span class="mf">1e-10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span><span class="o">.</span><span class="n">lookback_time</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">log10N</span> <span class="o">=</span> <span class="p">(</span><span class="n">a0</span><span class="o">+</span><span class="n">a1</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">t</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="o">/</span><span class="n">t1</span><span class="p">)</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">log10N</span>
+            <span class="c1"># the normalization</span>
+            <span class="n">aNS</span><span class="p">,</span><span class="n">bNS</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span><span class="o">-</span><span class="n">loc</span><span class="p">)</span><span class="o">/</span><span class="n">scal</span><span class="p">,</span> <span class="p">(</span><span class="n">high</span><span class="o">-</span><span class="n">loc</span><span class="p">)</span><span class="o">/</span><span class="n">scal</span>
+            <span class="n">pm1</span> <span class="o">=</span> <span class="n">truncnorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">aNS</span><span class="p">,</span> <span class="n">bNS</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scal</span><span class="p">)</span>
+            <span class="n">pm2</span> <span class="o">=</span> <span class="n">truncnorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="n">aNS</span><span class="p">,</span> <span class="n">bNS</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scal</span><span class="p">)</span>
+            <span class="c1"># the distribution of m1 and m2.</span>
+            <span class="n">rate</span> <span class="o">=</span> <span class="n">norm</span><span class="o">*</span><span class="n">pm1</span><span class="o">*</span><span class="n">pm2</span>
+        <span class="k">return</span> <span class="n">rate</span></div></div>
+
+<div class="viewcode-block" id="BHNS"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHNS">[docs]</a><span class="k">class</span> <span class="nc">BHNS</span><span class="p">(</span><span class="n">BHB</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This is a class to describe stellar mass black hole neutron stars mergers.</span>
+<span class="sd">    It inherits all functions from BHB class except set_model_theta and cos_mer_rate.</span>
+<span class="sd">    </span>
+<span class="sd">    Attributes:</span>
+<span class="sd">    cosmos: define cosmological model</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cosmos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          cosmos (class): define cosmological model</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span> <span class="o">=</span> <span class="n">cosmos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">thetaBHNS</span>
+
+<div class="viewcode-block" id="BHNS.set_model_theta"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHNS.set_model_theta">[docs]</a>    <span class="k">def</span> <span class="nf">set_model_theta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_theta</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The function to change theta from fiducial to user-defined.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          new_theta (Optional[list of floats]): new parameter values</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (list of floats): theta with new values, if new_theta=None return theta to fiducial</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">new_theta</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">new_theta</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="n">thetaBHNS</span></div>
+
+<div class="viewcode-block" id="BHNS.cos_mer_rate"><a class="viewcode-back" href="../../sources.html#gwtoolbox.sources_kHz.BHNS.cos_mer_rate">[docs]</a>    <span class="k">def</span> <span class="nf">cos_mer_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">chi</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The cosmic merger rate density of the stellar-mass BHB mergers.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">          z (float): The redshift of the GW source</span>
+<span class="sd">          M (float): Red-shifted mass of the BH</span>
+<span class="sd">          m (float): Red-shifted mass of the NS</span>
+<span class="sd">          chi (float): spin</span>
+<span class="sd">          </span>
+<span class="sd">        Returns:</span>
+<span class="sd">          (float): The number of mergers per year per Gpc3</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">a0</span><span class="p">,</span><span class="n">a1</span><span class="p">,</span><span class="n">t0</span><span class="p">,</span><span class="n">t1</span><span class="p">,</span><span class="n">loc</span><span class="p">,</span><span class="n">scal</span><span class="p">,</span><span class="n">low</span><span class="p">,</span><span class="n">high</span><span class="p">,</span><span class="n">b0</span><span class="p">,</span><span class="n">b1</span><span class="p">,</span><span class="n">c0</span><span class="p">,</span><span class="n">c1</span><span class="p">,</span><span class="n">d0</span><span class="p">,</span><span class="n">d1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">theta</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">z</span><span class="o">&lt;=</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">z</span><span class="o">&gt;=</span><span class="n">Z_HIGH</span> <span class="ow">or</span> <span class="n">M</span><span class="o">&lt;</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">m</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">):</span> <span class="n">rate</span> <span class="o">=</span> <span class="mf">1e-10</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cosmos</span><span class="o">.</span><span class="n">lookback_time</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+            <span class="n">log10N</span> <span class="o">=</span> <span class="p">(</span><span class="n">a0</span><span class="o">+</span><span class="n">a1</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="n">t</span><span class="o">-</span><span class="n">t0</span><span class="p">)</span><span class="o">/</span><span class="n">t1</span><span class="p">)</span><span class="o">+</span><span class="mf">1.</span><span class="p">)</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">log10N</span>
+            <span class="c1"># the normalization</span>
+            <span class="n">aNS</span><span class="p">,</span><span class="n">bNS</span> <span class="o">=</span> <span class="p">(</span><span class="n">low</span><span class="o">-</span><span class="n">loc</span><span class="p">)</span><span class="o">/</span><span class="n">scal</span><span class="p">,</span> <span class="p">(</span><span class="n">high</span><span class="o">-</span><span class="n">loc</span><span class="p">)</span><span class="o">/</span><span class="n">scal</span>
+            <span class="n">pm</span> <span class="o">=</span> <span class="n">truncnorm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">aNS</span><span class="p">,</span> <span class="n">bNS</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">loc</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scal</span><span class="p">)</span>
+            <span class="c1"># the mass of neutron star</span>
+            <span class="n">mu</span> <span class="o">=</span> <span class="n">b0</span><span class="o">+</span><span class="n">b1</span><span class="o">*</span><span class="n">t</span>
+            <span class="n">sigL</span> <span class="o">=</span> <span class="n">c0</span><span class="o">+</span><span class="n">c1</span><span class="o">*</span><span class="n">t</span>
+            <span class="n">sigR</span> <span class="o">=</span> <span class="n">d0</span><span class="o">+</span><span class="n">d1</span><span class="o">*</span><span class="n">t</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">2.</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">sigL</span><span class="o">+</span><span class="n">sigR</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">M</span> <span class="o">&lt;=</span> <span class="n">mu</span><span class="p">:</span> <span class="n">pM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">mu</span><span class="o">-</span><span class="n">M</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">sigL</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span> <span class="n">pM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">M</span><span class="o">-</span><span class="n">mu</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mf">2.</span><span class="o">*</span><span class="n">sigR</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+                    <span class="c1"># the distribution of BH mass</span>
+            <span class="n">rate</span> <span class="o">=</span> <span class="n">norm</span><span class="o">*</span><span class="n">pm</span><span class="o">*</span><span class="n">A</span><span class="o">*</span><span class="n">pM</span>
+        <span class="k">return</span> <span class="n">rate</span></div></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">GWToolbox</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tools.html">Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../detectors.html">Detectors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Radboud University.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

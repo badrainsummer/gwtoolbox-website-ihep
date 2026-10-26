@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<!--
+  Phantom by HTML5 UP
+  html5up.net | @ajlkn
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+  <head>
+    <title>GW Toolbox</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+      .img-container {
+        text-align: center;
+      }
+    </style>
+    
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="/assets/favicon.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <link href="assets/css/all.css" rel="stylesheet">
+    <script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+    </script>
+    <script id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+  </head>
+  <body class="is-preload">
+    <!-- Wrapper -->
+      <div id="wrapper">
+
+        <!-- Header -->
+          <header id="header">
+            <div class="inner">
+
+              <!-- Logo -->
+	      <a href="index.html" class="logo">
+           <div class="col-4"><img src="images/logogwtoolbox.jpg"  width="300"/></span></div>
+                </a>
+
+              <!-- Nav -->
+                <nav>
+                  <ul>
+                    <li><a href="#menu">Menu</a></li>
+                  </ul>
+                </nav>
+
+            </div>
+          </header>
+                
+        <!-- Menu -->
+          <nav id="menu">
+        <h2>Menu</h2>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <!--
+          <li><a href="quick-start.html">Quick start</a></li>
+          -->
+          <li><a href="GWtoolbox.html">GWtoolbox</a></li>
+          <li><a href="HEtoolbox.html">HEtoolbox</a></li>
+          <li><a href="/gradio/">AI Assistant</a></li>
+          <li><a href="population_model.html">Population Models</a></li>
+          <li><a href="https://bitbucket.org/radboudradiolab/gwtoolbox">Python Package</a></li>
+          <li><a href="documents.html">Documents</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="https://youtu.be/mdGZfIUXP_A">Demo on YouTube</a></li>
+          <li><a href="https://www.bilibili.com/video/BV14Q4y197H7?share_source=copy_web">Demo on blibli</a></li>
+        </ul>
+      </nav>
+
+        <!-- Main -->
+          <div id="main">
+            <div class="inner">
+              <h1>Population models of Sources</h1>
+              <h2>Ground-based detectors sources</h2>
+              <ul>
+              <li><b>Black Hole Binary Mergers</b></li>
+              <p>
+              The merger rate density is expressed as: 
+              $$\dot{n}(z, m_1,m_2,\chi)=\mathcal{R}(z)f(m_1)\pi(q)P(\chi)/m_1,$$
+                where $f(m_1)$ is the mass function of the primary black hole, $\pi(q)$ and $P(\chi)$ are the probability distributions of the mass ratio $q\equiv m_1/m_2$ and the effective spin $\chi$ respectively. $\mathcal{R}$ as function of $z$ is often refer to as the cosmic merger rate density:
+\begin{equation}
+    \mathcal{R}(z_m)=\mathcal{R}_n\int^\infty_{z_m}\psi(z_f)P(z_m|z_f)dz_f,
+\end{equation}
+where $\psi(z)$ is the Madau-Dickinson star formation rate:
+\begin{equation}
+    \psi(z)=\frac{(1+z)^\alpha}{1+(\frac{1+z}{C})^\beta},
+\end{equation}
+with $\alpha=2.7$, $\beta=5.6$, $C=2.9$ <a href="https://ui.adsabs.harvard.edu/abs/2014ARA%26A..52..415M/abstract">(Madau & Dickinson 2014)</a>, 
+and $P(z_m|z_f,\tau)$ is the probability that the BBH merger at $z_m$ if the binary is formed at $z_f$, which we refer to as the distribution of delay time with the form:
+\begin{equation}
+    P(z_m|z_f,\tau)=\frac{1}{\tau}\exp{\left[-\frac{t_f(z_f)-t_m(z_m)}{\tau}\right]}\frac{dt}{dz}.
+\end{equation}
+In the above equation, $t_f$ and $t_m$ are the look back time as function of $z_f$ and $z_m$ respectively. 
+<br>
+Therefore, $
+\mathcal{R}_n$ and $\tau$ is the pair of parameters that define the $z$ dependence of the merger rate density of the population. In below figure, we plot $\mathcal{R}(z)$ corresonding to different pair of $\mathcal{R}_n$ and $\tau$:
+<br>
+<div class="img-container">
+<img src="images/ndot.pdf" style="width:50%;">
+</div>
+The default parameters for BBH are set to $\mathcal{R}_0=13\,$Gpc$^{-3}$ yr$^{-1}$ and $\tau=3$ Gyrs, which are compatible with the local merger rate of BBH found with <a href="https://arxiv.org/abs/2010.14527">GWTC-2</a>
+<br>
+We use a uniform distribution between [$q_{\rm cut}$, 1] for $\pi(q)$ and assume $\chi$ follows a Gaussian distribution centered at zero with standard deviation $\sigma_{\chi}$. 
+<br>
+For the mass function, we provide two parameterizations:
+              </p>
+              <b>parameterization I:</b>
+              <p>
+              \begin{eqnarray}
+    p(m_1)
+    \propto &
+    \begin{cases}
+    \exp\left(-\frac{c}{m_1-\mu}\right)(m_1-\mu)^{-\gamma}, & m_1\le m_{\text{cut}} \\
+    0, & m_1>m_{\text{cut}}\\
+    \end{cases}
+    %\exp\left(-\frac{c}{m_1-\mu}\right)(m_1-\mu)^{-\gamma}.
+    \label{eqn:BBH-Pop2-mass}
+\end{eqnarray}
+The distribution of $p(m_1)$ is defined for $m_1>\mu$, which has a power law tail of index $-\gamma$ and a cut-off above $m_{\rm cut}$. The normalization of $p(m_1)$ is 
+    $$c^{1-\gamma}\Gamma(\gamma-1, \frac{c}{m_{\text{cut}}-\mu}),$$
+where $\Gamma(a,b)$ is the upper incomplete gamma function; The plot below is an illustration of the mass function. We set $\mu=3$, $\gamma=2.5$, $c=6$, $m_{cut}=95\,M_\odot$ as default.
+<br>
+<div class="img-container">
+<img src="images/PM1.pdf" style="width:50%">
+</div>
+              </p>
+              <b>parameterization II:</b>
+              <p>
+              $f(m_1)$ in this parameterization has an extra Gaussian peak component $p_{\rm{peak}}(m_1)$ on top of that in parameterization I:
+\begin{equation}
+    p_{\rm{peak}}(m_1)=A_{\rm{peak}}\exp\left[-\left(\frac{m_1-m_{\rm{peak}}}{\sigma_{\rm{peak}}}\right)^2\right],
+\end{equation}
+the normalization of the alternative $p(m_1)$ is:  
+$$c^{1-\gamma}\Gamma(\gamma-1, \frac{c}{m_{\text{cut}}-\mu})+\sqrt{2\pi}\sigma_{\rm{peak}}A_{\rm{peak}}.$$ Our default parameters for the peak component are $A_{\rm{peak}}=0.002$, $m_{\rm{peak}}=40\,M_\odot$, $\sigma_{\rm{peak}}=1\,M_\odot$
+
+              </p>
+              <li><b>Double Neutron star Mergers</b></li>
+              <p>
+              the merger rate density is expressed as:
+\begin{equation}
+    \dot{n}(z, m_1, m_2,\chi)=\mathcal{R}(z)p(m_1)p(m_2)P(\chi),
+\end{equation}
+where $\mathcal{R}(z)$ is taking the same form as in BBH population model, but with a different default setting: $\mathcal{R}_0=400\,$Gpc$^{-3}$ yr$^{-1}$ and $\tau=3$ Gyrs, which are compatible with the local merger rate of DNS found with <a href="https://arxiv.org/abs/2010.14527">GWTC-2</a>; 
+<br>
+$p(m_{1,2})$, the mass function of the neutron star: <b>truncated Gaussian with upper and lower cuts</b>. Therefore the parameters defining the mass function are:
+<br>
+ the peak of the Gaussian: $\overline{m}$, the dispersion: $\sigma_m$, the upper mass cut: $m_{\rm cut, high}$ and the lower mass cut: $m_{\rm cut, low}$. 
+ <br>
+The default parameters are: $\overline{m}=1.4\,M_\odot$, $\sigma_m=0.5\,M_\odot$, $m_{\rm cut, low}=1.1\,M_\odot$, $m_{\rm cut, high}=2.5\,M_\odot$; we use the same form $\chi$ distribution as in Black Hole Binary Mergers. 
+              </p>
+              <li><b>Black Hole-Neutron star Mergers</b></li>
+              For the population model of BHNS, we assume the merger rate density to be:
+\begin{equation}
+    \dot{n}(z, m_1, m_2, \chi)=\mathcal{R}(z)f(m_\bullet)p(m_{\rm n})P(\chi),
+\end{equation}
+where $\mathcal{R}(z)$ is taking the same form as in BBH and DNS, with a different default setting: $\mathcal{R}_0=5\,$Gpc$^{-3}$ yr$^{-1}$ and $\tau=3$ Gyrs; $f(m_\bullet)$ is the mass function of the BH, which is the same as in BBH, We denote the population model without/with the peak component in $f(m_\bullet)$ as parameterization I/II. ; $p(m_n)$ is the mass function of the NS, which is the same as in DNS. we use the same form $\chi$ distribution as in Black Hole Binary Mergers.
+              </ul>
+    <h2>Space-Borne detectors sources</h2>
+    <ul>
+    <li><b>Massive Black Hole Binary Mergers</b></li>
+    <p>
+    We use the MBHB catalogues from <a href="https://journals.aps.org/prd/abstract/10.1103/PhysRevD.93.024003">Klein et al. (2016)</a>. There are 3 population models, namely pop3, Q3_nodelays and Q3_delays, description of each population model can be found in Klein et al's paper. For each population model, there are 10 catalogues, each corresponds to a realisation of all sources in the Universe within one year. In the figure below, we plot $M_{\rm tot}$ (total mass) and $z$ of MBHB in the Universe within one year for three population models as a direct demonstration of the population models.
+    <div class="img-container">
+    <img src="images/MBHB_catalogues.pdf" style="width:50%">
+    </div>
+    </p>
+    <li><b>Galactic White Dwarf Binaries</b></li>
+    <p>
+    <b> Nelemans et al. (2001): </b>
+    <br>
+    We use the synthetic catalogue of DWD in the whole Galaxy from <a href="https://ui.adsabs.harvard.edu/abs/2001A%26A...375..890N/abstract">Nelemans et al. (2001)</a>. 
+    In the figure below, we plot the distribution density between the frequencies $f_{\rm s}=2/P$ (where $P$ is the orbital period of the binaries) and the intrinsic amplitudes $A=2\left(G\mathcal{M}\right)^{5/3}\left(\pi f\right)^{2/3}/(c^4d)$ of GW emitted from binaries in the catalogue.
+    <div class="img-container">
+    <img src="images/GB_cata.pdf" style="width:50%">
+    </div>
+    <br>
+    </p>
+    <b>Verification Binaries:</b>
+    Beside the synthetic catalogue, we also include a catalogue of 81 previously known DWDs <a href="https://journals.aps.org/prd/abstract/10.1103/PhysRevD.102.063021">(Huang et al. 2020)</a> as verification binaries (VBs). Those VBs are plotted along in the above figure with star markers. 
+    <li><b>Extreme Mass Ratio Inspiral</b></li>
+    In the Toolbox, we use the simulated catalogues which correspond to population models M1-M11 in <a href="https://journals.aps.org/prd/abstract/10.1103/PhysRevD.95.103012">Babak et al. (2017)</a>. For each population model, there are ten realization of catalogues, which contain detectable EMRIs within one year with their assumption of LISA noise properties. The distributions of $\mu$, $M$ and $D$ in the catalogues are plotted in the following figure. We exclude M7 and M12 in the Toolbox, because in their population models the direct plunges are ignored, therefore the total number of EMRIs are $\sim$ one order of magnitude larger than others, which will make the computation workload $\sim$ ten times bigger.
+    
+    <div class="img-container">
+    <img src="images/EMRIs_cata.pdf" style="width:75%">
+    </div>    
+    </ul>
+              
+            </div>
+          </div>
+
+        <!-- Footer -->
+          <footer id="footer">
+            <div class="inner">
+              <section>
+                <h2>Contact:</h2>
+                <span class="icon style1 fa-envelope-o"></span> toolbox.gw gmail.com
+              </section>
+              
+              <ul class="copyright">
+                <li>&copy; Radboud University. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+              </ul>
+            </div>
+          </footer>
+
+      </div>
+
+    <!-- Scripts -->
+      <script src="assets/js/jquery.min.js"></script>
+      <script src="assets/js/browser.min.js"></script>
+      <script src="assets/js/breakpoints.min.js"></script>
+      <script src="assets/js/util.js"></script>
+      <script src="assets/js/main.js"></script>
+
+  </body>
+</html>
+

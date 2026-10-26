@@ -1,0 +1,309 @@
+<!DOCTYPE HTML>
+<!--
+     Phantom by HTML5 UP
+     html5up.net | @ajlkn
+     Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>HE Toolbox</title>
+		<meta charset="utf-8" />
+		<link rel="shortcut icon" href="/assets/favicon.png"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/plot.css" />
+		<link rel="stylesheet" href="assets/css/patches.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+		<!-- <script src="https://www.google.com/recaptcha/api.js?render=6LchHMIUAAAAAGzHYwFRL6lW-9qqoMpiLMt52rz2"></script> -->
+		
+	</head>
+	
+
+	<body class="is-preload">
+		<!-- Wrapper -->
+		<div id="wrapper">
+			
+			<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					
+					<!-- Logo -->
+					<!-- <a href="HEtoolbox.html" class="logo">
+						<div class="col-4"><img src="images/logogwtoolbox.jpg"  width="300"/></span></div>
+					</a> -->
+					<!--
+					<span class="icon2 stylelogo fas fa-tools"></span>
+					<a href="index.html" class="logo">
+						<span class="title">GW Toolbox</span>
+					</a>
+					-->
+					<!-- Nav -->
+					<nav>
+						<ul>
+							<li><a href="#menu">Menu</a></li>
+						</ul>
+					</nav>
+					
+				</div>
+			</header>
+			
+			<!-- Menu -->
+			<nav id="menu">
+				<h2>Menu</h2>
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="HEtoolbox.html">HEtoolbox</a></li>
+					<li><a href="BlackHole.html">BlackHole</a></li>
+					<li><a href="Neutron.html">Neutron Star</a></li>
+					<li><a href="sGRB.html">sGRB</a></li>
+					<li><a href="Binary.html">Binary</a></li>
+					<li><a href="/gradio/">AI Assistant</a></li>
+					<li><a href="https://code.ihep.ac.cn/sxyi/high-energy-universe-toolbox.git">Python Package</a></li>
+					<!-- <li><a href="documents.html">Documents</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="https://youtu.be/mdGZfIUXP_A">Demo on YouTube</a></li>
+					<li><a href="https://www.bilibili.com/video/BV14Q4y197H7?share_source=copy_web">Demo on bilibili</a></li> -->
+				</ul>
+			</nav>
+
+			<!-- Main -->
+			<div id="main">
+				<div class="inner">
+					<h1>Binary Orbit Calculate</h1>
+					<div class="row">
+						<div class="col-6 col-12-small">
+							<h2>Input:</h2>
+							<form action="cgi-bin/form-binary.py" method="post" onchange="updateform()" onsubmit="return submitform()" id="setup" >
+								<div class="input-section" id="binary_para">
+									<h3>Binary Parameters:</h3>
+									<div class="param-line">
+										<label>Primary Mass (Solar Mass):</label>
+										<input type="text" name="mass_1" id="mass_1" placeholder="1.4">
+									</div>
+									<div class="param-line">
+										<label>Secondary Mass (Solar Mass):</label>
+										<input type="text" name="mass_2" id="mass_2" placeholder="17">
+									</div>
+									<div class="param-line">
+										<label>Semi-major Axis (AU):</label>
+										<input type="text" name="a" id="a" placeholder="0.5">
+									</div>
+									<div class="param-line">
+										<label>Eccentricity:</label>
+										<input type="text" name="e" id="e" placeholder="0.5">
+									</div>
+									<div class="param-line">
+										<label>Inclination (degrees):</label>
+										<input type="text" name="iota" id="iota" placeholder="90">
+									</div>
+									<div class="param-line">
+										<label>Longitude of Ascending Node (degrees):</label>
+										<input type="text" name="Omega" id="Omega" placeholder="180">
+									</div>
+									<div class="param-line">
+										<label>Argument of Periapsis (degrees):</label>
+										<input type="text" name="omega" id="omega" placeholder="45">
+									</div>
+								</div>
+								<div>
+									<input name="recaptcha" id="recaptcha" type="hidden" >
+									<input type = "submit" id="submit" value = "Observe" >
+								</div>
+							</form>
+							<style>
+								.input-section {
+									margin-left: 0;
+									margin-top: 1.2em;
+								}
+								.input-section .param-line {
+									margin-left: 2em;
+									display: flex;
+									align-items: baseline;
+									margin-bottom: 0.5em;
+								}
+								.input-section label {
+									width: 250px;
+									font-weight: normal;
+								}
+								.input-section input[type="text"] {
+									flex: 1;
+									padding: 4px 6px;
+									border: 1px solid #ccc;
+									border-radius: 4px;
+								}
+								.input-section input[type="text"]::placeholder {
+									font-size: 18px;
+									color: #888;
+								}
+								.input-section h3 {
+									margin-bottom: 0.6em;
+									margin-top: 0.2em;
+								}
+								.param-header {
+									display: flex;
+									align-items: center;
+									gap: 8px;
+									margin-bottom: 0.6em;
+									margin-left: 0.2em;
+								}
+								.param-header input[type="checkbox"] {
+									all: unset;
+									appearance: checkbox;
+									-webkit-appearance: checkbox;
+									width: 22px;
+									height: 22px;
+									cursor: pointer;
+									margin-right: 10px;
+									position: relative;
+									top: -3px;
+									flex-shrink: 0;
+								}
+								.param-header {
+									display: flex;
+									align-items: center;
+									gap: 6px;
+									margin-bottom: 0.6em;
+									margin-left: 0em;
+								}
+								#telescope .telescope-row {
+									display: flex;
+									gap: 20px;
+									margin-left: 2em;
+									margin-bottom: 0.5em;
+								}
+								#telescope .param-line {
+									display: flex;
+									align-items: center;
+								}
+								#telescope input[type="checkbox"] {
+									width: 20px;
+									height: 20px;
+									cursor: pointer;
+									margin-right: 6px;
+								}
+							</style>
+                        </div>
+						<div class="col-6 col-12-small">
+							<div class="param-header">
+								<h3>Sketchs:</h3>
+							</div>
+							<div>
+								<img src="images/binary.png" alt="binary" width="600">
+							</div>
+							<h2>Result:</h2>
+                            <div id="status">Waiting for your input ...</div>
+							<!-- <label id="resultstatus">Status: waiting for input</label>-->
+							<div id="Orbit_Inf">
+								<h5>Orbit Informations:</h5>
+                                <p>oirbital period (d): <span id="period">____</span></p>
+								<p>periastron distance (AU): <span id="pdis">____</span></p>
+								<p>apastron distance (AU): <span id="adis">____</span></p>
+								<p>superior conjunctiona (d): <span id="sconj">____</span></p>
+								<p>inferior conjunction (d): <span id="iconj">____</span></p>
+							</div>
+
+							<div id="Radial_Velocity" class="plot" style="width:800px; height:600px; margin-bottom:100px;">
+								<h5>Radial Velocity Curve over phase:</h5>
+								<div id="plotrv" class="plot" style="width:800px; height:500px; margin-bottom:20px;"></div>
+								<div id="phase-control" style="display:none;">
+									<label for="phaseSlider" style="margin-right:10px;">Phase shift (deg): </label>
+									<input type="range" id="phaseSlider" min="0" max="600" step="1" value="0" style="width:500px;">
+									<span id="phaseValue">0.0</span>
+								</div>
+								<div id="downloadrv" style="display:none;">
+									<!--
+									<form method="post" action="" onsubmit="savetable()" id="savetab">
+										<label> File Name </label><input type='text' id='filename'>
+										<input type="submit" id="savesubmit" value="Download Catalogue as json">
+									</form>
+									-->
+									<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+									<style>
+										.thintext{
+										font-size: 12px;
+										}
+									</style>
+									<style>
+										.slimtext{
+										font-size: 14px;
+										}
+									</style>
+									<button onclick="savecurve_rv()" class="download">download curve</button>
+									<style>
+										.download {
+										background-color: #e7e7e7; /* Green */
+										border: none;
+										color: white;
+										padding: 1px 5px;
+										text-align: center;
+										text-decoration: none;
+										display: inline-block;
+										font-size: 8px;
+										}
+									</style>
+								</div>
+							</div>
+
+							<div id="Binary_Separation" class="plot" style="width:800px; height:600px; margin-bottom:100px;">
+								<h5>Binary Separation Curve over time:</h5>
+								<div id="plotbs" class="plot" style="width:800px; height:500px; margin-bottom:20px;"></div>
+								<div id="time-control" style="display:none;">
+									<label for="timeSlider" style="margin-right:10px;">Time shift (d): </label>
+									<input type="range" id="timeSlider" min="0" max="600" step="1" value="0" style="width:500px;">
+									<span id="timeValue">0.0</span>
+								</div>
+								<div id="downloadbs" style="display:none;">
+									<!--
+									<form method="post" action="" onsubmit="savetable()" id="savetab">
+										<label> File Name </label><input type='text' id='filename'>
+										<input type="submit" id="savesubmit" value="Download Catalogue as json">
+									</form>
+									-->
+									<label style="display: inline; width: 20%;" class="thintext"> File Name: </label><input type='text' id='filename' style="display: inline; width: 20%;"><label style="display: inline; width: 20%;" class="thintext">.json</label>
+									<style>
+										.thintext{
+										font-size: 12px;
+										}
+									</style>
+									<style>
+										.slimtext{
+										font-size: 14px;
+										}
+									</style>
+									<button onclick="savecurve_bs()" class="download">download curve</button>
+									<style>
+										.download {
+										background-color: #e7e7e7; /* Green */
+										border: none;
+										color: white;
+										padding: 1px 5px;
+										text-align: center;
+										text-decoration: none;
+										display: inline-block;
+										font-size: 8px;
+										}
+									</style>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js" ></script>
+		<script src="assets/js/browser.min.js" ></script>
+		<script src="assets/js/breakpoints.min.js" ></script>
+		<script src="assets/js/util.js" ></script>
+		<script src="assets/js/main.js" ></script>
+		<script src="assets/js/collapse.js" ></script>
+        <script src='assets/js/plotly-latest.min.js'></script>
+		<script src='assets/js/interactive_plot-binary.js'></script>
+		<!-- <script>
+			$(update_captcha_token);
+		</script>-->
+	</body>
+</html>

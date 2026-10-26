@@ -1,0 +1,316 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Detectors &#8212; GWToolbox 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Sources" href="sources.html" />
+    <link rel="prev" title="Tools" href="tools.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="detectors">
+<h1>Detectors<a class="headerlink" href="#detectors" title="Permalink to this headline">¶</a></h1>
+<p>GW detectors description</p>
+<div class="section" id="module-gwtoolbox.detectors_earth">
+<span id="earth-detectors"></span><h2>Earth detectors<a class="headerlink" href="#module-gwtoolbox.detectors_earth" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gwtoolbox.detectors_earth.LigoLike">
+<em class="property">class </em><code class="descclassname">gwtoolbox.detectors_earth.</code><code class="descname">LigoLike</code><span class="sig-paren">(</span><em>det</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_earth.html#LigoLike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_earth.LigoLike" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class describes LIGO-like detectors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>det</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – detector ID (0 - Virgo, 1 - LIGO, -1 - LIGO-like)</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gwtoolbox.detectors_earth.LigoLike.ante_pattern">
+<code class="descname">ante_pattern</code><span class="sig-paren">(</span><em>theta</em>, <em>varphi</em>, <em>psi</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_earth.html#LigoLike.ante_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_earth.LigoLike.ante_pattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Antenna Pattern of LIGO-like (two arms with 90 deg) Gravitational Waves (GW) Observatories.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>theta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – the polar angle of the GW source in the detector coordinates frame</li>
+<li><strong>varphi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – the azimuth angle of the GW source in the detector coordiantes frame</li>
+<li><strong>psi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – the polarization angle of the GW</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">size=2, [Fplus, Fcross]</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(array of dtype float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.detectors_earth.LigoLike.noise_curve">
+<code class="descname">noise_curve</code><span class="sig-paren">(</span><em>pars=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_earth.html#LigoLike.noise_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_earth.LigoLike.noise_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Noise power spectrum of LIGO-like GW observatories.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pars</strong> (<em>Optional</em><em>[</em><em>list of floats</em><em>]</em>) – which defines the configuration of the LIGO-like detector, this list of parameters will be passed to FINESSE</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">noise vs. frequency, size=(,2), the 0-th column are frequencies, and 1-st column are corresponding noise power</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(array of dtype float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gwtoolbox.detectors_earth.ETLike">
+<em class="property">class </em><code class="descclassname">gwtoolbox.detectors_earth.</code><code class="descname">ETLike</code><span class="sig-paren">(</span><em>det</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_earth.html#ETLike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_earth.ETLike" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class describes ET-like detectors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>det</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – detector ID (2 - ET, -2 - ET-like)</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gwtoolbox.detectors_earth.ETLike.ante_pattern">
+<code class="descname">ante_pattern</code><span class="sig-paren">(</span><em>theta</em>, <em>varphi</em>, <em>psi</em>, <em>Nnest=3</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_earth.html#ETLike.ante_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_earth.ETLike.ante_pattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Antenna Pattern of ET-like (multiple detectors nested, each has two arms with 60 deg) Gravitational Waves (GW) Observatories.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>theta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – the polar angle of the GW source in the detector coordinates frame</li>
+<li><strong>varphi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – the azimuth angle of the GW source in the detector coordiantes frame</li>
+<li><strong>psi</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – the polarization angle of the GW</li>
+<li><strong>Nnest</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of nested detectors</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">size=(Nnext,2). The i-th row are the Antenna Patterns [Fplus,Fcross] of the i-th nested detector</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">(array of dtype float)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.detectors_earth.ETLike.noise_curve">
+<code class="descname">noise_curve</code><span class="sig-paren">(</span><em>pars=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_earth.html#ETLike.noise_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_earth.ETLike.noise_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Noise power spectrum of ET-like GW observatories.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pars</strong> (<em>Optional</em><em>[</em><em>list of floats</em><em>]</em>) – define the configuration of the ET-like detector, this list of parameters will be passed to FINESSE ???</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">noise vs. frequency, size=(,2), the 0-th column are frequencies, and 1-st column are corresponding noise power</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(array of dtype float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="module-gwtoolbox.simulate_ligo">
+<span id="simulate-ligo-like-detector"></span><h3>Simulate LIGO-like detector<a class="headerlink" href="#module-gwtoolbox.simulate_ligo" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="gwtoolbox.simulate_ligo.Session">
+<em class="property">class </em><code class="descclassname">gwtoolbox.simulate_ligo.</code><code class="descname">Session</code><span class="sig-paren">(</span><em>pars=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/simulate_ligo.html#Session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.simulate_ligo.Session" title="Permalink to this definition">¶</a></dt>
+<dd><p>Object capable of running a PyKat simulation according to kat_code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pars</strong> (<em>list of floats</em>) – new setup for detector</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gwtoolbox.simulate_ligo.Session.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/simulate_ligo.html#Session.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.simulate_ligo.Session.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run PyKat in this block, using the code specified in the katCode variable.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-gwtoolbox.detectors_space">
+<span id="space-detectors"></span><h2>Space detectors<a class="headerlink" href="#module-gwtoolbox.detectors_space" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="gwtoolbox.detectors_space.LisaLike">
+<em class="property">class </em><code class="descclassname">gwtoolbox.detectors_space.</code><code class="descname">LisaLike</code><span class="sig-paren">(</span><em>det</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_space.html#LisaLike"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_space.LisaLike" title="Permalink to this definition">¶</a></dt>
+<dd><p>This class describes LISA-like detectors</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>det</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – detector ID (3 - LISA, -3 - LISA-like)</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="gwtoolbox.detectors_space.LisaLike.ante_pattern">
+<code class="descname">ante_pattern</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_space.html#LisaLike.ante_pattern"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_space.LisaLike.ante_pattern" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Antenna Pattern of LISA-like Gravitational Waves Observatories.</p>
+<p>Parameters:</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">antenna pattern</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(array of dtype float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="gwtoolbox.detectors_space.LisaLike.noise_curve">
+<code class="descname">noise_curve</code><span class="sig-paren">(</span><em>pars=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/gwtoolbox/detectors_space.html#LisaLike.noise_curve"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gwtoolbox.detectors_space.LisaLike.noise_curve" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Noise power spectrum of LISA-like GW observatories.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pars</strong> (<em>Optional</em><em>[</em><em>list of floats</em><em>]</em>) – which defines the configuration of the LISA-like detector</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">noise vs. frequency, size=(,2), the 0-th column are frequencies, and 1-st column are corresponding noise power</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">(array of dtype float)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">GWToolbox</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Instalation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Detectors</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-gwtoolbox.detectors_earth">Earth detectors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-gwtoolbox.detectors_space">Space detectors</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sources.html">Sources</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tools.html" title="previous chapter">Tools</a></li>
+      <li>Next: <a href="sources.html" title="next chapter">Sources</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Radboud University.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/detectors.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
